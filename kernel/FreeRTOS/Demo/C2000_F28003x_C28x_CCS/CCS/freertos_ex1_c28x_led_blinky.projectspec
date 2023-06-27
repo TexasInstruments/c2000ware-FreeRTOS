@@ -1,0 +1,35 @@
+<projectSpec>
+  <project
+        name="freertos_ex1_c28x_led_blinky"
+        device="TMS320F280039C"
+        cgtVersion="22.6.0.LTS"
+        outputFormat="ELF"
+        launchWizard="False"
+        linkerCommandFile=""
+        enableSysConfigTool="true"
+        sysConfigBuildOptions="--product ${C2000WARE_ROOT}/.metadata/sdk.json --device f28003x"
+        >
+    <configuration name="CPU1_RAM" compilerBuildOptions="--opt_level=off -I${PROJECT_ROOT}/device -I${C2000WARE_DLIB_ROOT} -I${Free_RTOS}/portable/CCS/C2000_C28x -I${Free_RTOS}/include -v28 -ml -mt --cla_support=cla2 --float_support=fpu32 --tmu_support=tmu0 --define=DEBUG  --define=CPU1  --diag_warning=225  --diag_suppress=10063" linkerBuildOptions="--entry_point code_start --stack_size=0x100  --heap_size=0x200 --define RAM" />
+    <configuration name="CPU1_FLASH" compilerBuildOptions="--opt_level=off -I${PROJECT_ROOT}/device -I${C2000WARE_DLIB_ROOT} -I${Free_RTOS}/portable/CCS/C2000_C28x -I${Free_RTOS}/include -v28 -ml -mt --define=_FLASH --cla_support=cla2 --float_support=fpu32 --tmu_support=tmu0 --define=DEBUG  --define=CPU1  --diag_warning=225  --diag_suppress=10063" linkerBuildOptions="--entry_point code_start --stack_size=0x100  --heap_size=0x200 " />
+    <pathVariable name="C2000WARE_ROOT" path="../../../../../" scope="project" />
+    <pathVariable name="C2000WARE_DLIB_ROOT" path="${C2000WARE_ROOT}/driverlib/f28003x/driverlib" scope="project" />
+    <pathVariable name="Free_RTOS" path="../../../Source/" scope="project" />
+    <file action="copy" path="${C2000WARE_ROOT}/device_support/f28003x/common/include/driverlib.h" targetDirectory="device" />
+    <file action="copy" path="${C2000WARE_ROOT}/device_support/f28003x/common/include/device.h" targetDirectory="device" />
+    <file action="copy" path="${C2000WARE_ROOT}/device_support/f28003x/common/source/device.c" targetDirectory="device" />
+    <file action="copy" path="${C2000WARE_ROOT}/device_support/f28003x/common/targetConfigs/TMS320F280039C.ccxml" targetDirectory="targetConfigs" />
+    <file action="copy" path="${C2000WARE_ROOT}/device_support/f28003x/common/cmd/28003x_generic_ram_lnk.cmd" targetDirectory="" applicableConfigurations="CPU1_RAM" />
+    <file action="copy" path="${C2000WARE_ROOT}/device_support/f28003x/common/cmd/28003x_generic_flash_lnk.cmd" targetDirectory="" applicableConfigurations="CPU1_FLASH" />
+    <file action="copy" path="${C2000WARE_DLIB_ROOT}/" targetDirectory="device" excludeFromBuild="True" />
+    <file action="copy" path="${C2000WARE_ROOT}/device_support/f28003x/common/source/f28003x_codestartbranch.asm" targetDirectory="device" />
+    <file action="link" path="${C2000WARE_DLIB_ROOT}/ccs/Debug/driverlib.lib" targetDirectory="" />
+    <file action="copy" path="../freertos_ex1_c28x_led_blinky.c" targetDirectory="" />
+	<file action="copy" path="../FreeRTOSConfig.h" targetDirectory="" />
+	<file action="link" path="${Free_RTOS}/tasks.c" targetDirectory="FreeRTOS" />
+	<file action="link" path="${Free_RTOS}/queue.c" targetDirectory="FreeRTOS" />
+	<file action="link" path="${Free_RTOS}/list.c" targetDirectory="FreeRTOS" />
+	<file action="link" path="${Free_RTOS}/portable/CCS/C2000_C28x/port.c" targetDirectory="FreeRTOS/port" />
+	<file action="link" path="${Free_RTOS}/portable/CCS/C2000_C28x/portasm.asm" targetDirectory="FreeRTOS/port" />
+	<file action="link" path="${Free_RTOS}/portable/CCS/C2000_C28x/portmacro.h" targetDirectory="FreeRTOS/port" />
+  </project>
+</projectSpec>

@@ -1,0 +1,109 @@
+/*
+ * Copyright (C) 2021 Texas Instruments Incorporated - http://www.ti.com/
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ */
+
+#ifndef FREERTOS_CONFIG_H
+#define FREERTOS_CONFIG_H
+
+%   var module = system.modules['/kernel/freertos_tool/FREERTOS'];
+%   if (module != null)
+%   {
+%       var instance = module.$instances[0];
+%       var freertosPath = instance.freertosPath
+// Kernel configuration
+#define configCPU_CLOCK_HZ                        `instance.CPU_CLOCK_HZ`
+#define configTICK_RATE_HZ                        `instance.TICK_RATE_HZ`
+#define configMAX_PRIORITIES                      `instance.MAX_PRIORITIES`
+#define configMINIMAL_STACK_SIZE                  `instance.MINIMAL_STACK_SIZE`
+#define configMAX_TASK_NAME_LEN                   `instance.MAX_TASK_NAME_LEN`
+#define configQUEUE_REGISTRY_SIZE                 `instance.QUEUE_REGISTRY_SIZE`
+#define configTASK_NOTIFICATION_ARRAY_ENTRIES     `instance.TASK_NOTIFICATION_ARRAY_ENTRIES`
+#define configUSE_PREEMPTION                      `(instance.USE_PREEMPTION == true) ? 1:0`
+#define configUSE_TIME_SLICING                    `(instance.USE_TIME_SLICING == true) ? 1:0`
+#define configUSE_PORT_OPTIMISED_TASK_SELECTION   `(instance.USE_PORT_OPTIMISED_TASK_SELECTION == true) ? 1:0`
+#define configUSE_TICKLESS_IDLE                   `(instance.USE_TICKLESS_IDLE == true) ? 1:0`
+#define configUSE_16_BIT_TICKS                    `(instance.USE_16_BIT_TICKS == true) ? 1:0`
+#define configIDLE_SHOULD_YIELD                   `(instance.IDLE_SHOULD_YIELD == true) ? 1:0`
+#define configUSE_TASK_NOTIFICATIONS              `(instance.USE_TASK_NOTIFICATIONS == true) ? 1:0`
+#define configUSE_MUTEXES                         `(instance.USE_MUTEXES == true) ? 1:0`
+#define configUSE_RECURSIVE_MUTEXES               `(instance.USE_RECURSIVE_MUTEXES == true) ? 1:0`
+#define configUSE_COUNTING_SEMAPHORES             `(instance.USE_COUNTING_SEMAPHORES == true) ? 1:0`
+#define configUSE_QUEUE_SETS                      `(instance.USE_QUEUE_SETS == true) ? 1:0`
+#define configENABLE_BACKWARD_COMPATIBILITY       `(instance.ENABLE_BACKWARD_COMPATIBILITY == true) ? 1:0`
+#define RECORD_STACK_HIGH_ADDRESS                 `(instance.RECORD_STACK_HIGH_ADDRESS == true) ? 1:0`
+
+// Memory allocation related configurations
+#define configSUPPORT_STATIC_ALLOCATION           `(instance.SUPPORT_STATIC_ALLOCATION == true) ? 1:0`
+#define configSUPPORT_DYNAMIC_ALLOCATION          `(instance.SUPPORT_DYNAMIC_ALLOCATION == true) ? 1:0`
+#define configAPPLICATION_ALLOCATED_HEAP          `(instance.APPLICATION_ALLOCATED_HEAP == true) ? 1:0`
+#define configSTACK_ALLOCATION_FROM_SEPARATE_HEAP `(instance.STACK_ALLOCATION_FROM_SEPARATE_HEAP == true) ? 1:0`
+#define configTOTAL_HEAP_SIZE                     `instance.TOTAL_HEAP_SIZE`
+
+// Hooks/Callbacks related configurations
+#define configUSE_IDLE_HOOK                       `(instance.USE_IDLE_HOOK == true) ? 1:0`
+#define configUSE_TICK_HOOK                       `(instance.USE_TICK_HOOK == true) ? 1:0`
+#define configCHECK_FOR_STACK_OVERFLOW            `(instance.CHECK_FOR_STACK_OVERFLOW == true) ? 1:0`
+#define configUSE_MALLOC_FAILED_HOOK              `(instance.USE_MALLOC_FAILED_HOOK == true) ? 1:0`
+#define configUSE_DAEMON_TASK_STARTUP_HOOK        `(instance.USE_DAEMON_TASK_STARTUP_HOOK == true) ? 1:0`
+
+// Run time statistics related configurations
+#define configGENERATE_RUN_TIME_STATS `(instance.GENERATE_RUN_TIME_STATS == true) ? 1:0`
+#define configUSE_TRACE_FACILITY      `(instance.USE_TRACE_FACILITY == true) ? 1:0`
+#define configUSE_STATS_FORMATTING_FUNCTIONS `(instance.USE_STATS_FORMATTING_FUNCTIONS == true) ? 1:0`
+
+// Co-routines specific configurations
+#define configUSE_CO_ROUTINES  `(instance.USE_CO_ROUTINES == true) ? 1:0`
+#define configMAX_CO_ROUTINE_PRIORITIES `instance.MAX_CO_ROUTINE_PRIORITIES`
+
+// Software Timers specific configurations
+#define configUSE_TIMERS `(instance.USE_TIMERS == true) ? 1:0`
+#define configTIMER_TASK_PRIORITY `instance.TIMER_TASK_PRIORITY`
+#define configTIMER_QUEUE_LENGTH `instance.TIMER_QUEUE_LENGTH`
+#define configTIMER_TASK_STACK_DEPTH `instance.TIMER_TASK_STACK_DEPTH`
+
+// Optional APIs Inclusion specific configurations
+#define INCLUDE_vTaskPrioritySet                  `(instance.vTaskPrioritySet == true) ? 1:0`
+#define INCLUDE_uxTaskPriorityGet                 `(instance.uxTaskPriorityGet == true) ? 1:0`
+#define INCLUDE_vTaskDelete                       `(instance.vTaskDelete == true) ? 1:0`
+#define INCLUDE_vTaskSuspend                      `(instance.vTaskSuspend == true) ? 1:0`
+#define INCLUDE_xResumeFromISR                    `(instance.xResumeFromISR == true) ? 1:0`
+#define INCLUDE_vTaskDelayUntil                   `(instance.vTaskDelayUntil == true) ? 1:0`
+#define INCLUDE_vTaskDelay                        `(instance.vTaskDelay == true) ? 1:0`
+#define INCLUDE_xTaskGetSchedulerState            `(instance.xTaskGetSchedulerState == true) ? 1:0`
+#define INCLUDE_xTaskGetCurrentTaskHandle         `(instance.xTaskGetCurrentTaskHandle == true) ? 1:0`
+#define INCLUDE_uxTaskGetStackHighWaterMark       `(instance.uxTaskGetStackHighWaterMark == true) ? 1:0`
+#define INCLUDE_xTaskGetIdleTaskHandle            `(instance.xTaskGetIdleTaskHandle == true) ? 1:0`
+#define INCLUDE_eTaskGetState                     `(instance.eTaskGetState == true) ? 1:0`
+#define INCLUDE_xEventGroupSetBitFromISR          `(instance.xEventGroupSetBitFromISR == true) ? 1:0`
+#define INCLUDE_xTimerPendFunctionCall            `(instance.xTimerPendFunctionCall == true) ? 1:0`
+#define INCLUDE_xTaskAbortDelay                   `(instance.xTaskAbortDelay == true) ? 1:0`
+#define INCLUDE_xTaskGetHandle                    `(instance.xTaskGetHandle == true) ? 1:0`
+#define INCLUDE_xTaskResumeFromISR                `(instance.xTaskResumeFromISR == true) ? 1:0`
+#define INCLUDE_vTaskCleanUpResources             `(instance.vTaskCleanUpResources == true) ? 1:0`
+%
+%   }
+
+// Set the following definitions to 1 to include the API function, or zero
+// to exclude the API function.
+
+
+#endif /* FREERTOS_CONFIG_H */
+

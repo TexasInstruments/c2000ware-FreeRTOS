@@ -1,0 +1,18 @@
+% var module = system.modules['/kernel/freertos_tool/FREERTOS'];
+%if (module != null)
+%{
+    % var instance = module.$instances[0];
+    % var freertosPath = instance.freertosPath
+//
+// Needed C files for FREERTOS when external FREERTOS install is used
+//
+
+#include "`freertosPath`\FreeRTOS\Source\tasks.c"
+#include "`freertosPath`\FreeRTOS\Source\queue.c"
+#include "`freertosPath`\FreeRTOS\Source\list.c"
+#include "`freertosPath`\FreeRTOS\Source\timers.c"
+#include "`freertosPath`\FreeRTOS\Source\event_groups.c"
+#include "`freertosPath`\FreeRTOS\Source\stream_buffer.c"
+#include "`freertosPath`\FreeRTOS\Source\portable\ThirdParty\Community-Supported-Ports\CCS\C2000_C28x\port.c"
+#include "`freertosPath`\FreeRTOS\Source\portable\MemMang\heap_4.c"
+%}

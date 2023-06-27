@@ -1,0 +1,11 @@
+% var module = system.modules['/kernel/freertos_tool/FREERTOS'];
+%if (module != null)
+%{
+    % var instance = module.$instances[0];
+    % var freertosPath = instance.freertosPath
+;
+; Needed ASM files for FREERTOS when external FREERTOS install is used
+;
+
+    .include "`freertosPath`\FreeRTOS\Source\portable\ThirdParty\Community-Supported-Ports\CCS\C2000_C28x\portasm.asm"
+%}

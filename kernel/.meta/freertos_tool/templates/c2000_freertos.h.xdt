@@ -1,0 +1,253 @@
+/*
+ * Copyright (C) 2021 Texas Instruments Incorporated - http://www.ti.com/
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ */
+
+#ifndef C2000_FREERTOS_H
+#define C2000_FREERTOS_H
+
+//
+// Includes
+//
+#include "FreeRTOS.h"
+#include "task.h"
+#include "semphr.h"
+#include "queue.h"
+#include "timers.h"
+#include "event_groups.h"
+#include "driverlib.h"
+%   var module = system.modules['/kernel/freertos_tool/FREERTOS'];
+%   var taskNames      = [];
+%   var semaphoreNames = [];
+%   var queueNames     = [];
+%   var timerNames     = [];
+%   var eventNames     = [];
+%   if (module != null)
+%   {
+%       var instance = module.$instances[0];
+% /* Start: Task related declarations   */
+
+%   if(instance.APPLICATION_ALLOCATED_HEAP == true)
+%   {
+extern uint8_t ucHeap[ `instance.TOTAL_HEAP_SIZE` ];
+
+%   }
+%   if(instance.SUPPORT_STATIC_ALLOCATION == true)
+%   {
+//
+// Idle task specific macros
+//
+#define IDLE_TASK_STACK_SIZE configMINIMAL_STACK_SIZE
+
+//
+// Idle task specific variables
+//
+extern StaticTask_t idleTaskTCBBuffer;
+extern StackType_t idleTaskStack[IDLE_TASK_STACK_SIZE];
+
+%       if(instance.USE_TIMERS == true)
+%       {
+//
+// Timer service task specific macros
+//
+#define TIMER_TASK_STACK_SIZE  configTIMER_TASK_STACK_DEPTH
+
+//
+// Timer service task specific variables
+//
+extern StaticTask_t timerTaskTCBBuffer;
+extern StackType_t timerTaskStack[TIMER_TASK_STACK_SIZE];
+
+%       }
+%   }
+%       var tasks = instance.tasks;
+%       var numberOfTasks = tasks.length;
+%       for (var taskInstanceIndex = 0; taskInstanceIndex < numberOfTasks; taskInstanceIndex++)
+%       {
+%           var taskInstance = tasks[taskInstanceIndex];
+%           taskNames.push(taskInstance.$name)
+//
+// Macro for task stack size
+//
+#define `taskInstance.$name`_STACK_SIZE `taskInstance.taskStackSize`
+
+%           if(taskInstance.createDynamicTask == false)
+%           {
+//
+// Variables for Task TCB and stack
+//
+extern StaticTask_t `taskInstance.taskControlBlock`;
+extern StackType_t `taskInstance.taskStackBuffer`[`taskInstance.$name`_STACK_SIZE];
+
+%           }
+//
+// Task Handle for task `taskInstance.$name`
+//
+extern TaskHandle_t `taskInstance.taskHandle`;
+
+%       }
+% /* End: Task related declarations   */
+% /* Start: Semaphores/Mutexes related declarations   */
+%       var semaphores = instance.semaphores;
+%       var numberOfsemaphores = semaphores.length;
+%       for (var semaphoreInstanceIndex = 0; semaphoreInstanceIndex < numberOfsemaphores; semaphoreInstanceIndex++)
+%       {
+%           var semaphoreInstance = semaphores[semaphoreInstanceIndex];
+%           semaphoreNames.push(semaphoreInstance.$name);
+//
+// Declare a variable to hold the handle of the created semaphore.
+//
+extern SemaphoreHandle_t  `semaphoreInstance.semHandle`;
+
+%           if(semaphoreInstance.createDynamicSem == false)
+%           {
+//
+// Declare a variable to hold data associated with the created static semaphore.
+//
+extern StaticSemaphore_t `semaphoreInstance.semBuffer`;
+
+%           }
+%       }
+% /* End: Semaphores related declarations   */
+% /* Start: Queues related configurations   */
+%       var queues = instance.queues
+%       var numberOfQueues = queues.length
+%       for(var queueInstanceIndex = 0; queueInstanceIndex < numberOfQueues; queueInstanceIndex++)
+%       {
+%           var queueInstance = queues[queueInstanceIndex]
+%           queueNames.push(queueInstance.$name)
+//
+// Declare a variable to hold the handle of the created queue
+//
+extern QueueHandle_t `queueInstance.queueHandle`;
+
+%           if(queueInstance.createDynamicQueue == false)
+%           {
+//
+// Declare variable to hold the queue's data structure.
+//
+extern StaticQueue_t `queueInstance.queueBuffer`;
+
+//
+// Declare the array to use as the queue's storage area.  This must be at least
+// QueueLength * ItemSize bytes.
+//
+extern uint8_t `queueInstance.queueStorageBuffer`[`queueInstance.queueLength` * `queueInstance.queueItemSize`];
+
+%           }
+%       }
+% /* End: Queues related configurations   */
+% /* Start: Timers related declarations   */
+%       var timers = instance.timers;
+%       var numberOfTimers = timers.length;
+%       for (var timerInstanceIndex = 0; timerInstanceIndex < numberOfTimers; timerInstanceIndex++)
+%       {
+%           var timerInstance = timers[timerInstanceIndex];
+%           timerNames.push(timerInstance.$name)
+//
+// Declare a variable to hold the handle of the created timer.
+//
+extern TimerHandle_t  `timerInstance.timerHandle` = NULL;
+
+%           if(timerInstance.createDynamicTimer == false)
+%           {
+//
+// Declare a variable to hold the data associated with the created  static timer.
+//
+extern StaticTimer_t  `timerInstance.timerBuffer`;
+
+%           }
+%       }
+% /* End: Timers related declarations   */
+% /* Start: Events related declarations   */
+%       var events = instance.events;
+%       var numberOfEvents = events.length;
+%       for (var eventInstanceIndex = 0; eventInstanceIndex < numberOfEvents; eventInstanceIndex++)
+%       {
+%           var eventInstance = events[eventInstanceIndex];
+%           eventNames.push(eventInstance.$name)
+//
+// Declare a variable to hold the handle of the created event group.
+//
+extern EventGroupHandle_t `eventInstance.eventHandle`;
+
+%           if(eventInstance.createDynamicEvent == false)
+%           {
+//
+// Declare a variable to hold the data associated with the created  static event group.
+//
+extern StaticEventGroup_t `eventInstance.eventGroupBuffer`;
+
+%           }
+%       }
+% /* End: Events related declarations   */
+%       for (var taskInstanceIndex = 0; taskInstanceIndex < numberOfTasks; taskInstanceIndex++)
+%       {
+%           var taskInstance = tasks[taskInstanceIndex];
+//
+// Declaration for Task function. Application needs to implement this.
+//
+extern void `taskInstance.taskPointer`( void * pvParameters );
+%       }
+
+%       for (var timerInstanceIndex = 0; timerInstanceIndex < numberOfTimers; timerInstanceIndex++)
+%       {
+%           var timerInstance = timers[timerInstanceIndex];
+//
+// Declarations for call back function. Application needs to implement these.
+//
+extern void `timerInstance.timerCallbackFunction`( TimerHandle_t xTimer );
+%       }
+%   }
+//
+// Init Functions
+//
+%   for (var taskName of taskNames) {
+void `taskName`_init();
+%   }
+%   for (var semaphoreName of semaphoreNames) {
+void `semaphoreName`_init();
+%   }
+%   for (var queueName of queueNames) {
+void `queueName`_init();
+%   }
+%   for (var timerName of timerNames) {
+void `timerName`_init();
+%   }
+%   for (var eventName of eventNames) {
+void `eventName`_init();
+%   }
+%   if(instance.SUPPORT_STATIC_ALLOCATION == true)
+%   {
+void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer,
+                                    StackType_t **ppxIdleTaskStackBuffer,
+                                    uint32_t *pulIdleTaskStackSize );
+%   }
+%   if((instance.SUPPORT_STATIC_ALLOCATION == true) && (instance.USE_TIMERS == true))
+%   {
+void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer,
+                                     StackType_t **ppxTimerTaskStackBuffer,
+                                     uint32_t *pulTimerTaskStackSize );
+%   }
+void vApplicationSetupTimerInterrupt( void );
+void FreeRTOS_init();
+
+#endif /* C2000_FREERTOS_H */
+
