@@ -1,9 +1,9 @@
 <div align="center">
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/TexasInstruments-Logo.svg" width="150"><br/>
-# c2000ware-rtos
+# c2000ware-FreeRTOS
 
-[Introduction](#introduction) | [Layout](#repositorylayout) | [Overview](#overview) | [Contribute](#contributing-to-the-project)
+[Introduction](#introduction) | [Layout](#repositorylayout) | [Note](#note) | [Contribute](#contributing-to-the-project)
 
 </div>
 
@@ -31,11 +31,9 @@ List of devices supported
 - kernel/FreeRTOS/Demo
 	- This folder contains the demo application projects 
 	
+## Note
 
-
-## Overview
-
-	This repository has a dependency on c2000ware-core-sdk repository. It is added as a git submodule to the c2000ware-core-sdk repository.
+This repository has a dependency on c2000ware-core-sdk repository. It is added as a git submodule to the c2000ware-core-sdk repository.
 	
 ## Contributing to the project
 
