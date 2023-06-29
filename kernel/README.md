@@ -35,7 +35,9 @@ List of devices supported
 
 ## Overview
 
-	This repository has a dependency on c2000ware-core-sdk repository. It is added as a git submodule to the c2000ware-core-sdk repository.
+   This repository has a dependency on [c2000ware-core-sdk](https://github.com/TexasInstruments/c2000ware-core-sdk) repository. 
+   Please clone the c2000ware-core-sdk repo and then clone this repo. 
+   The contents of this repo (kernel) folder has to be copied into the c2000ware-core-sdk repo.
 	
 ## Contributing to the project
 
