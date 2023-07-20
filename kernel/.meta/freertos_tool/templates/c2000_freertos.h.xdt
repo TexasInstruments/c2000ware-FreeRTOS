@@ -164,7 +164,7 @@ extern uint8_t `queueInstance.queueStorageBuffer`[`queueInstance.queueLength` * 
 //
 // Declare a variable to hold the handle of the created timer.
 //
-extern TimerHandle_t  `timerInstance.timerHandle` = NULL;
+extern TimerHandle_t  `timerInstance.timerHandle`;
 
 %           if(timerInstance.createDynamicTimer == false)
 %           {

@@ -1,0 +1,40 @@
+<projectSpec>
+  <project
+        name="freertos_ex1_c28x_led_blinky"
+        device="Generic C28xx Device"
+        cgtVersion="22.6.0.LTS"
+        products="c2000ware_software_package"
+        outputFormat="ELF"
+        launchWizard="False"
+        linkerCommandFile=""
+        enableSysConfigTool="true"
+        sysConfigBuildOptions="--product ${C2000WARE_ROOT}/.metadata/sdk.json --device F28P65x --package 256ZEJ --part F28P65x_256ZEJ"
+         >
+    <configuration name="CPU1_RAM" compilerBuildOptions=  "--opt_level=off -I${C2000WARE_ROOT} -I${PROJECT_ROOT}/device -I${C2000WARE_DLIB_ROOT} -I${FreeRTOS_SOURCE_PORT} -I${FreeRTOS_SOURCE_INCLUDE} -v28 -ml -mt --cla_support=cla2 --define=RAM --float_support=fpu64 --tmu_support=tmu0 --define=DEBUG --define=CPU1 --gen_func_subsections=on --diag_warning=225  --diag_suppress=10063" linkerBuildOptions="--entry_point code_start --stack_size=0x3F8 --heap_size=0x200 -i${C2000WARE_ROOT} " />
+    <configuration name="CPU1_FLASH" compilerBuildOptions="--opt_level=off -I${C2000WARE_ROOT} -I${PROJECT_ROOT}/device -I${C2000WARE_DLIB_ROOT} -I${FreeRTOS_SOURCE_PORT} -I${FreeRTOS_SOURCE_INCLUDE} --define=_FLASH -v28 -ml -mt --cla_support=cla2 --float_support=fpu64 --tmu_support=tmu0 --define=DEBUG --define=CPU1 --gen_func_subsections=on --diag_warning=225  --diag_suppress=10063" linkerBuildOptions="--entry_point code_start --stack_size=0x3F8 --heap_size=0x200 --define=_FLASH " />
+    <pathVariable name="C2000WARE_ROOT" path="../../../../../" scope="project" />
+    <pathVariable name="C2000WARE_DLIB_ROOT" path="${C2000WARE_ROOT}/driverlib/f28p65x/driverlib" scope="project" />
+    <pathVariable name="FreeRTOS_ROOT" path="../../.." scope="project" />
+    <pathVariable name="FreeRTOS_SOURCE_INCLUDE" path="${FreeRTOS_ROOT}/Source/include" scope="project" />
+    <pathVariable name="FreeRTOS_SOURCE_PORT" path="${FreeRTOS_ROOT}/Source/portable/CCS/C2000_C28x" scope="project" />
+
+    <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p65x/common/include/driverlib.h" targetDirectory="device" />
+    <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p65x/common/include/device.h" targetDirectory="device" />
+    <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p65x/common/source/device.c" targetDirectory="device" />
+    <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p65x/common/targetConfigs/TMS320F28P650DK9.ccxml" targetDirectory="targetConfigs" />
+    <file action="copy" path="../linker_cmd/28p65x_freertos_ram_lnk_cpu1.cmd" targetDirectory="" applicableConfigurations="CPU1_RAM" />
+    <file action="copy" path="../linker_cmd/28p65x_freertos_flash_lnk_cpu1.cmd" targetDirectory="" applicableConfigurations="CPU1_FLASH" />
+    <file action="copy" path="${C2000WARE_DLIB_ROOT}/" targetDirectory="device" excludeFromBuild="True" />
+    <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p65x/common/source/f28p65x_codestartbranch.asm" targetDirectory="device" />
+    <file action="link" path="${C2000WARE_DLIB_ROOT}/ccs/Debug/driverlib.lib" targetDirectory="" />
+    <file action="copy" path="../freertos_ex1_c28x_led_blinky.c" targetDirectory="" />
+
+    <file action="copy" path="../freertos_config/FreeRTOSConfig_ex1_led_blinky.h" targetDirectory="" targetName="FreeRTOSConfig.h" />
+    <file action="link" path="${FreeRTOS_ROOT}/Source/tasks.c" targetDirectory="FreeRTOS" />
+    <file action="link" path="${FreeRTOS_ROOT}/Source/queue.c" targetDirectory="FreeRTOS" />
+    <file action="link" path="${FreeRTOS_ROOT}/Source/list.c" targetDirectory="FreeRTOS" />
+    <file action="link" path="${FreeRTOS_SOURCE_PORT}/port.c" targetDirectory="FreeRTOS/port" />
+    <file action="link" path="${FreeRTOS_SOURCE_PORT}/portasm.asm" targetDirectory="FreeRTOS/port" />
+    <file action="link" path="${FreeRTOS_SOURCE_PORT}/portmacro.h" targetDirectory="FreeRTOS/port" />
+  </project>
+</projectSpec>

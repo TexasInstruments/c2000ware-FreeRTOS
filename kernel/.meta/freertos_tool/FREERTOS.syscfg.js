@@ -24,7 +24,7 @@ var config = [
     {
         name: "freertosPath",
         displayName: "FreeRTOS Install Path",
-        default: "C:/FreeRTOSv202012_00",
+        default: "",
         fileFilter: ".*",
         hidden: true,
         pickDirectory: true,
