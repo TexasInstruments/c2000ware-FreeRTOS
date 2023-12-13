@@ -14,6 +14,7 @@ This repository contains FreeRTOS kernel source/header files and kernel ports on
 C2000Ware SDK supports FreeRTOS on C28x and Cortex-M4(CM) cores.
 
 List of devices supported
+- [F28P65x](https://www.ti.com/product/TMS320F28P650DK) 
 - [F280015x](https://www.ti.com/product/TMS320F2800157) 
 - [F280013x](https://www.ti.com/product/TMS320F2800137)
 - [F28003x](https://www.ti.com/product/TMS320F280039C)
