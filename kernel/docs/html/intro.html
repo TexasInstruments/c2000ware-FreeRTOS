@@ -77,7 +77,7 @@
             
             
               <div class="version">
-                v5.00.00.00
+                v5.02.00.00
               </div>
             
           
@@ -142,24 +142,34 @@
   <div class="section" id="freertos-support-overview">
 <span id="intro"></span><h1>FreeRTOS Support Overview<a class="headerlink" href="#freertos-support-overview" title="Permalink to this headline">¶</a></h1>
 <p>FreeRTOS is a market-leading real-time operating system (RTOS) for microcontrollers and small microprocessors. Distributed freely under the MIT open source license, FreeRTOS includes a kernel and a growing set of libraries suitable for use across all industry sectors. FreeRTOS is built with an emphasis on reliability and ease of use.</p>
-<p>C2000Ware SDK supports FreeRTOS on C28x and Cortex-M4(CM) cores.</p>
+<p>C2000Ware SDK supports FreeRTOS on C28x and Cortex-M4 (CM) cores.</p>
 <div class="section" id="features-supported">
 <h2>Features Supported<a class="headerlink" href="#features-supported" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><dl class="simple">
 <dt>FreeRTOS Kernel</dt><dd><ul>
 <li><p>Tasks, semaphores, mutex, queues, timers, list, heap, event groups</p></li>
-<li><p>preemptive priority based scheduler</p></li>
-<li><p>static and/or dynamic memory allocation mode</p></li>
+<li><p>Preemptive priority-based scheduler</p></li>
+<li><p>Static and/or dynamic memory allocation mode</p></li>
 <li><p>fpu32 and fpu64 support in the port</p></li>
 </ul>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>Sysconfig Support</dt><dd><ul>
+<dt>SysConfig Support</dt><dd><ul>
 <li><p>SysConfig can be used to configure kernel constructs along with the tick timer configuration</p></li>
-<li><p>Available for c28x only</p></li>
+<li><p>Available for C28x only</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>ROV Support (CCS Theia IDE only)</dt><dd><ul>
+<li><p>Runtime Object View (ROV) is a debugging tool that let developers quickly visualize the state of embedded applications</p></li>
+<li><p>ROV reads memory from the target over JTAG connection while adding zero footprint to the target code. ROV also automatically refreshes all of its views whenever the target is stopped</p></li>
+<li><p>Views are provided for monitoring overall task and heap status, as well as individual instances of tasks, queues, mutexes, semaphores and timers</p></li>
+<li><p>ROV can be enabled via SysConfig, and accessed in CCS Theia through <strong>View -&gt; Runtime (RTOS) Objects</strong> (ROV available in C2000Ware_5_02_00_00 or newer)</p></li>
 </ul>
 </dd>
 </dl>
@@ -169,15 +179,16 @@
 <div class="section" id="features-not-supported">
 <h2>Features NOT Supported<a class="headerlink" href="#features-not-supported" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Support for Port Optimised Task Selection in not available in c28x port</p></li>
-<li><p>Syscfg support is not available for CM examples</p></li>
+<li><p>Support for Port Optimised Task Selection in not available in C28x port</p></li>
+<li><p>SysConfig support is not available for CM examples</p></li>
+<li><p>ROV support is not avaliable for CCS (Eclipse version)</p></li>
 </ul>
 </div>
 <div class="section" id="important-files-and-directory-structure">
 <h2>Important files and directory structure<a class="headerlink" href="#important-files-and-directory-structure" title="Permalink to this headline">¶</a></h2>
 <dl class="simple">
-<dt>FreeRTOS source is distributed along with C2000Ware SDK and given below are some important files and folders related to FreeRTOS.</dt><dd><ul class="simple">
-<li><p>FreeRTOS kernel : &lt;C2000Ware root&gt;/kernel/FreeRTOS/Source</p></li>
+<dt>FreeRTOS source is distributed along with C2000Ware SDK, and given below are some important files and folders related to FreeRTOS.</dt><dd><ul class="simple">
+<li><p>FreeRTOS Kernel : &lt;C2000Ware root&gt;/kernel/FreeRTOS/Source</p></li>
 <li><p>FreeRTOS C28x port : &lt;C2000Ware root&gt;/kernel/FreeRTOS/Source/portable/CCS/C2000_C28x</p></li>
 <li><p>FreeRTOS CM port : &lt;C2000Ware root&gt;/kernel/FreeRTOS/Source/portable/CCS/ARM_CM4</p></li>
 <li><p>FreeRTOS Demos: &lt;C2000Ware root&gt;/kernel/FreeRTOS/Demo</p></li>
@@ -188,7 +199,14 @@
 <div class="section" id="tool-chain-support">
 <h2>Tool Chain Support<a class="headerlink" href="#tool-chain-support" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Code Composer Studio™ IDE (CCS) v11.1.0 or newer</p></li>
+<li><dl class="simple">
+<dt>Code Composer Studio™ IDE</dt><dd><ul>
+<li><p>CCS v11.1.0 or newer</p></li>
+<li><p>CCS Theia v1.3.1 or newer</p></li>
+</ul>
+</dd>
+</dl>
+</li>
 <li><p>C2000 Compiler v20.2.1.LTS or newer</p></li>
 <li><p>C2000Ware_3_01_00_00 or newer</p></li>
 <li><p>FreeRTOSv202112.00</p></li>
@@ -218,9 +236,9 @@
 
   <div role="contentinfo">
     <p>
-      <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">2020, Texas Instruments Incorporated</a>, Texas Instruments Incorporated. All rights reserved. <br/>
+      <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">2024, Texas Instruments Incorporated</a>, Texas Instruments Incorporated. All rights reserved. <br/>
       <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
-      <span class="lastupdated">Last updated on Nov 17, 2023.
+      <span class="lastupdated">Last updated on Apr 07, 2024.
       </span></p>
   </div>
 
@@ -240,7 +258,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'v5.00.00.00',
+            VERSION:'v5.02.00.00',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false,

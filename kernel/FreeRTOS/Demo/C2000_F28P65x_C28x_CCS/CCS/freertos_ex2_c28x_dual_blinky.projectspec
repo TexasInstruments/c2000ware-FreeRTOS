@@ -3,7 +3,7 @@
         name="freertos_ex2_c28x_dual_blinky_cpu1"
         device="Generic C28xx Device"
         cgtVersion="22.6.0.LTS"
-        products="c2000ware_software_package"
+        products="C2000WARE"
         outputFormat="ELF"
         launchWizard="False"
         linkerCommandFile=""

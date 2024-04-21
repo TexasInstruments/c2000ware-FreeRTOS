@@ -31,17 +31,37 @@ var references = [
         },
         {
             name: "PORT",
-            path: "../kernel/FreeRTOS/Source/portable/CCS/C2000_c28x/port.c",
+            path: "../kernel/FreeRTOS/Source/portable/CCS/C2000_C28x/port.c",
             alwaysInclude: false,
         },
         {
             name: "PORTASM",
-            path: "../kernel/FreeRTOS/Source/portable/CCS/C2000_c28x/portasm.asm",
+            path: "../kernel/FreeRTOS/Source/portable/CCS/C2000_C28x/portasm.asm",
+            alwaysInclude: false,
+        },
+        {
+            name: "HEAP1",
+            path: "../kernel/FreeRTOS/Source/portable/MemMang/heap_1.c",
+            alwaysInclude: false,
+        },
+        {
+            name: "HEAP2",
+            path: "../kernel/FreeRTOS/Source/portable/MemMang/heap_2.c",
+            alwaysInclude: false,
+        },
+        {
+            name: "HEAP3",
+            path: "../kernel/FreeRTOS/Source/portable/MemMang/heap_3.c",
             alwaysInclude: false,
         },
         {
             name: "HEAP4",
             path: "../kernel/FreeRTOS/Source/portable/MemMang/heap_4.c",
+            alwaysInclude: false,
+        },
+        {
+            name: "HEAP5",
+            path: "../kernel/FreeRTOS/Source/portable/MemMang/heap_5.c",
             alwaysInclude: false,
         },
         //

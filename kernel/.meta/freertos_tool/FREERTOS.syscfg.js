@@ -5,11 +5,26 @@ let Pinmux   = system.getScript("/driverlib/pinmux.js");
 let CMDCommon = system.getScript("/kernel/freertos_tool/FREERTOSCommon.js");
 
 /* Intro splash on GUI */
-let longDescription = `FreeRTOS Configuration Tool
+let longDescription = `FreeRTOS Configuration Tool`;
 
-For more information on the tool visit:
-`;
-
+function onChangeEnableROV(inst, ui)
+{
+    if (inst.enableROV == true)
+    {
+        inst.SUPPORT_DYNAMIC_ALLOCATION = true;
+        inst.MAX_TASK_NAME_LEN = 16;
+        inst.QUEUE_REGISTRY_SIZE = 10;
+        inst.USE_QUEUE_SETS = false;
+        inst.USE_TRACE_FACILITY = true;
+        inst.CHECK_FOR_STACK_OVERFLOW = 2;   
+        // Heap type needs to be 4, add check
+    }
+    else
+    {
+        inst.USE_TRACE_FACILITY = false;
+        inst.CHECK_FOR_STACK_OVERFLOW = 0;
+    }
+}
 
 var config = [
     // Folder select
@@ -30,10 +45,23 @@ var config = [
         pickDirectory: true,
     },
     {
+        name: "enableROV",
+        displayName: "Enable ROV settings",
+        description: "ROV/RTOS Objects is a debugging tool part of CCS",
+        onChange: onChangeEnableROV,
+        default: false,
+    },
+    {
         name: "GROUP_FREERTOS_CONFIG",
         displayName: "FreeRTOS Configuration",
         collapsed: true,
         config: [
+        {
+            name: "START_SCHEDULER" ,
+            displayName: "Start scheduler after initialization",
+            description: "Start FreeRTOS scheduler from within the Sysconfig initialization code",
+            default: true,
+        },    
         {
         name: "GROUP_KERNEL_CONFIG",
         displayName: "Kernel Configuration",
@@ -67,7 +95,7 @@ var config = [
                 name: "MAX_TASK_NAME_LEN" ,
                 displayName: "Max Task Name Length",
                 description: "",
-                default: 10,
+                default: 16,
             },
             {
                 name: "QUEUE_REGISTRY_SIZE" ,
@@ -106,11 +134,28 @@ var config = [
                 default: false,
             },
             {
-                name: "USE_16_BIT_TICKS" ,
+                name: "EXPECTED_IDLE_TIME_BEFORE_SLEEP" ,
+                displayName: "Expected idle time before sleep",
+                description: "",
+                default: 2,
+            },
+            {
+                name: "USE_16_BIT_TICKS" ,          
                 displayName: "Use 16 Bit Ticks",
                 description: "",
                 default: false,
             },
+            /* {
+                name: "TICK_TYPE_WIDTH_IN_BITS" ,           // To be updated
+                displayName: "Tick type width in bits",
+                description: "",
+                default     : 'TICK_TYPE_WIDTH_32_BITS',
+                options     : [
+                    {name: "TICK_TYPE_WIDTH_16_BITS"},
+                    {name: "TICK_TYPE_WIDTH_32_BITS"},
+                    {name: "TICK_TYPE_WIDTH_64_BITS"},
+                ]
+            }, */
             {
                 name: "IDLE_SHOULD_YIELD" ,
                 displayName: "Idle Should Yield",
@@ -154,6 +199,18 @@ var config = [
                 default: false,
             },
             {
+                name: "NUM_THREAD_LOCAL_STORAGE_POINTERS" ,
+                displayName: "Number of indexes in each task's TLS array",
+                description: "",
+                default: 0,
+            },
+            {
+                name: "USE_MINI_LIST_ITEM" ,
+                displayName: "Use mini list items in lists",
+                description: "",
+                default: true,
+            },
+            {
                 name: "RECORD_STACK_HIGH_ADDRESS" ,
                 displayName: "Record Stack High Address",
                 description: "",
@@ -177,6 +234,29 @@ var config = [
                 displayName: "Support Dynamic Allocation",
                 description: "",
                 default: true,
+                onChange: (inst, ui)=>{
+                    if(inst.SUPPORT_DYNAMIC_ALLOCATION == true)
+                    {
+                        ui.HEAP_TYPE.hidden = false;
+                    }
+                    else
+                    {
+                        ui.HEAP_TYPE.hidden = true;
+                    }
+                }
+            },
+            {
+                name: "HEAP_TYPE" ,
+                displayName: "Heap Type",
+                description: "",
+                default: "heap_4",
+                options: [
+                    {name: "heap_1", displayName: "Heap 1"},
+                    {name: "heap_2", displayName: "Heap 2"},
+                    {name: "heap_3", displayName: "Heap 3"},
+                    {name: "heap_4", displayName: "Heap 4"},
+                    {name: "heap_5", displayName: "Heap 5"}
+                ]
             },
             {
                 name: "APPLICATION_ALLOCATED_HEAP" ,
@@ -220,7 +300,12 @@ var config = [
                 name: "CHECK_FOR_STACK_OVERFLOW" ,
                 displayName: "Check For Stack Overflow",
                 description: "",
-                default: false,
+                default: 0,
+                options: [
+                    {name: 0, displayName: "0 (Disabled)"},
+                    {name: 1, displayName: "1"},
+                    {name: 2, displayName: "2"},
+                ]
             },
             {
                 name: "USE_MALLOC_FAILED_HOOK" ,
@@ -381,6 +466,12 @@ var config = [
                 default: false
             },
             {
+                name: "uxTaskGetStackHighWaterMark2",
+                displayName: "uxTaskGetStackHighWaterMark2",
+                description: "",
+                default: false
+            },
+            {
                 name: "xTaskGetIdleTaskHandle",
                 displayName: "xTaskGetIdleTaskHandle",
                 description: "",
@@ -422,12 +513,12 @@ var config = [
                 description: "",
                 default: false
             },
-            {
-                name: "vTaskCleanUpResources",
+            /* {
+                name: "vTaskCleanUpResources",          // Obsolete API
                 displayName: "vTaskCleanUpResources",
                 description: "",
                 default: false
-            },
+            }, */
         ]
     }
  ]
@@ -439,24 +530,30 @@ var moduleInstances = (inst) => {
     var mods = []
     mods.push({
         name: "tasks",
-        displayName: "User Tasks Configuration",
+        displayName: "User Task Configurations",
         moduleName: "/kernel/freertos_tool/task.js",
-        //requiredArgs : {
-        //    :
-        //},
+        requiredArgs: {
+            maxNameLength           : inst.MAX_TASK_NAME_LEN,
+            maxPriority             : inst.MAX_PRIORITIES,
+        },
         useArray: true,
         collapsed: true,
     })
     mods.push({
         name: "semaphores",
-        displayName: "Semaphores / Mutexes Configurations",
+        displayName: "Semaphore/Mutex Configurations",
         moduleName: "/kernel/freertos_tool/semaphore.js",
         useArray: true,
         collapsed: true,
+        requiredArgs: {
+            isMutexEnabled          : inst.USE_MUTEXES,
+            isRecMutexEnabled       : inst.USE_RECURSIVE_MUTEXES,
+            isCountingSemEnabled    : inst.USE_COUNTING_SEMAPHORES
+        },
     })
     mods.push({
         name: "queues",
-        displayName: "Queues Configurations",
+        displayName: "Queue Configurations",
         moduleName: "/kernel/freertos_tool/queue.js",
         useArray: true,
         collapsed: true,
@@ -464,14 +561,17 @@ var moduleInstances = (inst) => {
 
     mods.push({
         name: "timers",
-        displayName: "Timers Configurations",
+        displayName: "Timer Configurations",
         moduleName: "/kernel/freertos_tool/timer.js",
         useArray: true,
         collapsed: true,
+        requiredArgs: {
+            isTimerEnabled      : inst.USE_TIMERS
+        },
     })
     mods.push({
         name: "events",
-        displayName: "Events Configurations",
+        displayName: "Event Configurations",
         moduleName: "/kernel/freertos_tool/event.js",
         useArray: true,
         collapsed: true,
@@ -539,6 +639,18 @@ function onValidate(inst, validation)
         validation.logError(
             "Application allocated heap should be enabled to avoid memory issues!", inst, "APPLICATION_ALLOCATED_HEAP");
     }
+    
+    if(inst.IDLE_SHOULD_YIELD == true && inst.USE_PREEMPTION == false)
+    {
+        validation.logWarning(
+            "Preemptive scheduler must be enabled to take effect",inst,"IDLE_SHOULD_YIELD");
+    }
+
+    if(inst.USE_DAEMON_TASK_STARTUP_HOOK == true && inst.USE_TIMERS == false)
+    {
+        validation.logWarning(
+            "Timer usage must be enabled to take effect",inst,"USE_DAEMON_TASK_STARTUP_HOOK");
+    }
 
     if(inst.SUPPORT_STATIC_ALLOCATION == true)
     {
@@ -550,6 +662,27 @@ function onValidate(inst, validation)
     {
         validation.logError(
             "Update timer task stack depth!", inst, "TIMER_TASK_STACK_DEPTH");
+    }
+
+    if (inst.enableROV == true){
+        if(inst.SUPPORT_DYNAMIC_ALLOCATION == false)
+            validation.logWarning(
+                "Must be on for full ROV functionality",inst,"SUPPORT_DYNAMIC_ALLOCATION");
+        if(inst.MAX_TASK_NAME_LEN != 16)
+            validation.logWarning(
+                "Must be 16 for full ROV functionality",inst,"MAX_TASK_NAME_LEN");
+        if(inst.QUEUE_REGISTRY_SIZE < 1)
+            validation.logWarning(
+                "Must be >=1 for full ROV functionality",inst,"QUEUE_REGISTRY_SIZE");
+        if(inst.USE_QUEUE_SETS == true)
+            validation.logWarning(
+                "Must be false for full ROV functionality",inst,"USE_QUEUE_SETS");
+        if(inst.USE_TRACE_FACILITY == false)
+            validation.logWarning(
+                "Must be on for full ROV functionality",inst,"USE_TRACE_FACILITY");
+        if(inst.CHECK_FOR_STACK_OVERFLOW < 2)
+            validation.logWarning(
+                "Must be 2 for full ROV functionality",inst,"CHECK_FOR_STACK_OVERFLOW");
     }
 }
 
@@ -582,7 +715,12 @@ var freeRTOSModule = {
                     name: "pullInTemplateFREERTOS_SOURCE",
                     moduleName: "/kernel/freertos_tool/templates/c2000_freertos_references.dynamic.js",
                 })
-
+                if(inst.SUPPORT_DYNAMIC_ALLOCATION == true){
+                    mods.push({
+                        name: "pullInHeap",
+                        moduleName: "/kernel/freertos_tool/templates/heap/"+String(inst.HEAP_TYPE)+".js",
+                    })
+                }
             }
             return mods;
         }
@@ -593,7 +731,8 @@ var freeRTOSModule = {
         "/kernel/freertos_tool/templates/c2000_freertos.h.xdt" : "",
         "/kernel/freertos_tool/templates/FreeRTOSConfig.h.xdt" : "",
         "/kernel/freertos_tool/templates/c2000_freertos.cmd.genlibs.xdt" : "",
-        "/kernel/freertos_tool/templates/c2000_freertos.opt.xdt": ""
+        "/kernel/freertos_tool/templates/c2000_freertos.opt.xdt": "",
+        "/kernel/freertos_tool/templates/syscfg_c.rov.xs.xdt": ""
     },
     config              : config,
     validate            : onValidate,

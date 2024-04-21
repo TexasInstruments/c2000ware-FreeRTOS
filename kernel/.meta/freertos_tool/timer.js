@@ -2,10 +2,25 @@
 /*global exports, system*/
 let CMDCommon = system.getScript("/kernel/freertos_tool/FREERTOSCommon.js");
 
+
+function onValidate(inst, validation)
+{
+    if(inst.isTimerEnabled == false)  
+    {
+        validation.logError(
+            "Timer must be enabled in FreeRTOSConfig.h",inst);
+    }
+}
+
 var config = [
     {
         name: "$name",
         hidden: false,
+    },
+    {
+        name: "isTimerEnabled",
+        default: false,
+        hidden: true,
     },
     {
         name: "timerPeriod",
@@ -67,5 +82,6 @@ var config = [
 exports = {
     displayName         : "Timer",
     defaultInstanceName : "myTimer",
-    config              : config
+    config              : config,
+    validate            : onValidate,
 };

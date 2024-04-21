@@ -11,6 +11,5 @@ exports = {
         references.getReferencePath("SBUFFER"),
         references.getReferencePath("PORT"),
         references.getReferencePath("PORTASM"),
-        references.getReferencePath("HEAP4"),
     ]
 };

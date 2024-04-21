@@ -1,0 +1,50 @@
+/**
+ * Import the modules used in this configuration.
+ */
+const led       = scripting.addModule("/driverlib/board_components/led", {}, false);
+const led1      = led.addInstance();
+const led2      = led.addInstance();
+const FREERTOS  = scripting.addModule("/kernel/freertos_tool/FREERTOS", {}, false);
+const FREERTOS1 = FREERTOS.addInstance();
+
+/**
+ * Write custom configuration values to the imported modules.
+ */
+led1.$name                  = "myLED1";
+led1.gpio.writeInitialValue = true;
+led1.gpio.initialValue      = 1;
+led1.gpio.gpioPin.$assign   = "GPIO31";
+
+led2.$name                  = "myLED2";
+led2.gpio.writeInitialValue = true;
+led2.gpio.initialValue      = 1;
+led2.gpio.gpioPin.$assign   = "GPIO34";
+
+FREERTOS1.$name                           = "myFREERTOS0";
+FREERTOS1.USE_MUTEXES                     = true;
+FREERTOS1.START_SCHEDULER                 = false;
+FREERTOS1.enableROV                       = true;
+FREERTOS1.USE_TIMERS                      = true;
+FREERTOS1.MINIMAL_STACK_SIZE              = 256;
+FREERTOS1.TIMER_TASK_STACK_DEPTH          = 256;
+FREERTOS1.CPU_CLOCK_HZ                    = 120000000;
+FREERTOS1.tasks.create(2);
+FREERTOS1.tasks[0].taskPointer            = "LED_TaskRed";
+FREERTOS1.tasks[0].createDynamicTask      = true;
+FREERTOS1.tasks[0].taskParams             = "0xDEADBEAF";
+FREERTOS1.tasks[0].taskPriority           = 5;
+FREERTOS1.tasks[0].taskStackSize          = 256;
+FREERTOS1.tasks[0].$name                  = "myTaskLedRed";
+FREERTOS1.tasks[1].taskPointer            = "LED_TaskBlue";
+FREERTOS1.tasks[1].taskParams             = "0xBAADF00D";
+FREERTOS1.tasks[1].taskPriority           = 4;
+FREERTOS1.tasks[1].taskStackSize          = 256;
+FREERTOS1.tasks[1].$name                  = "myTaskLedBlue";
+FREERTOS1.semaphores.create(2);
+FREERTOS1.semaphores[0].$name             = "binarySem1";
+FREERTOS1.semaphores[1].semType           = "MUTEX_SEMAPHORE";
+FREERTOS1.semaphores[1].$name             = "mutex1";
+FREERTOS1.timers.create(1);
+FREERTOS1.timers[0].$name                 = "myTimer1";
+FREERTOS1.timers[0].timerCallbackFunction = "myTimerCallback";
+FREERTOS1.timers[0].timerPeriod           = "pdMS_TO_TICKS(100)";

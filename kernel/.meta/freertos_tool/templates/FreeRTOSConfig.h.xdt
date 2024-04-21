@@ -29,10 +29,10 @@
 %       var instance = module.$instances[0];
 %       var freertosPath = instance.freertosPath
 // Kernel configuration
-#define configCPU_CLOCK_HZ                        `instance.CPU_CLOCK_HZ`
-#define configTICK_RATE_HZ                        `instance.TICK_RATE_HZ`
+#define configCPU_CLOCK_HZ                        ( ( unsigned long ) `instance.CPU_CLOCK_HZ` )
+#define configTICK_RATE_HZ                        ( ( TickType_t ) `instance.TICK_RATE_HZ` )
 #define configMAX_PRIORITIES                      `instance.MAX_PRIORITIES`
-#define configMINIMAL_STACK_SIZE                  `instance.MINIMAL_STACK_SIZE`
+#define configMINIMAL_STACK_SIZE                  ( ( unsigned short ) `instance.MINIMAL_STACK_SIZE` )
 #define configMAX_TASK_NAME_LEN                   `instance.MAX_TASK_NAME_LEN`
 #define configQUEUE_REGISTRY_SIZE                 `instance.QUEUE_REGISTRY_SIZE`
 #define configTASK_NOTIFICATION_ARRAY_ENTRIES     `instance.TASK_NOTIFICATION_ARRAY_ENTRIES`
@@ -40,6 +40,7 @@
 #define configUSE_TIME_SLICING                    `(instance.USE_TIME_SLICING == true) ? 1:0`
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION   `(instance.USE_PORT_OPTIMISED_TASK_SELECTION == true) ? 1:0`
 #define configUSE_TICKLESS_IDLE                   `(instance.USE_TICKLESS_IDLE == true) ? 1:0`
+#define configEXPECTED_IDLE_TIME_BEFORE_SLEEP     `instance.EXPECTED_IDLE_TIME_BEFORE_SLEEP`
 #define configUSE_16_BIT_TICKS                    `(instance.USE_16_BIT_TICKS == true) ? 1:0`
 #define configIDLE_SHOULD_YIELD                   `(instance.IDLE_SHOULD_YIELD == true) ? 1:0`
 #define configUSE_TASK_NOTIFICATIONS              `(instance.USE_TASK_NOTIFICATIONS == true) ? 1:0`
@@ -48,19 +49,21 @@
 #define configUSE_COUNTING_SEMAPHORES             `(instance.USE_COUNTING_SEMAPHORES == true) ? 1:0`
 #define configUSE_QUEUE_SETS                      `(instance.USE_QUEUE_SETS == true) ? 1:0`
 #define configENABLE_BACKWARD_COMPATIBILITY       `(instance.ENABLE_BACKWARD_COMPATIBILITY == true) ? 1:0`
-#define RECORD_STACK_HIGH_ADDRESS                 `(instance.RECORD_STACK_HIGH_ADDRESS == true) ? 1:0`
+#define configNUM_THREAD_LOCAL_STORAGE_POINTERS   `(instance.NUM_THREAD_LOCAL_STORAGE_POINTERS)`
+#define configUSE_MINI_LIST_ITEM                  `(instance.USE_MINI_LIST_ITEM == true) ? 1:0`
+#define configRECORD_STACK_HIGH_ADDRESS           `(instance.RECORD_STACK_HIGH_ADDRESS == true) ? 1:0`
 
 // Memory allocation related configurations
 #define configSUPPORT_STATIC_ALLOCATION           `(instance.SUPPORT_STATIC_ALLOCATION == true) ? 1:0`
 #define configSUPPORT_DYNAMIC_ALLOCATION          `(instance.SUPPORT_DYNAMIC_ALLOCATION == true) ? 1:0`
 #define configAPPLICATION_ALLOCATED_HEAP          `(instance.APPLICATION_ALLOCATED_HEAP == true) ? 1:0`
 #define configSTACK_ALLOCATION_FROM_SEPARATE_HEAP `(instance.STACK_ALLOCATION_FROM_SEPARATE_HEAP == true) ? 1:0`
-#define configTOTAL_HEAP_SIZE                     `instance.TOTAL_HEAP_SIZE`
+#define configTOTAL_HEAP_SIZE                     ( ( size_t ) ( `instance.TOTAL_HEAP_SIZE` ) )
 
 // Hooks/Callbacks related configurations
 #define configUSE_IDLE_HOOK                       `(instance.USE_IDLE_HOOK == true) ? 1:0`
 #define configUSE_TICK_HOOK                       `(instance.USE_TICK_HOOK == true) ? 1:0`
-#define configCHECK_FOR_STACK_OVERFLOW            `(instance.CHECK_FOR_STACK_OVERFLOW == true) ? 1:0`
+#define configCHECK_FOR_STACK_OVERFLOW            `instance.CHECK_FOR_STACK_OVERFLOW`
 #define configUSE_MALLOC_FAILED_HOOK              `(instance.USE_MALLOC_FAILED_HOOK == true) ? 1:0`
 #define configUSE_DAEMON_TASK_STARTUP_HOOK        `(instance.USE_DAEMON_TASK_STARTUP_HOOK == true) ? 1:0`
 
@@ -79,7 +82,7 @@
 #define configTIMER_QUEUE_LENGTH `instance.TIMER_QUEUE_LENGTH`
 #define configTIMER_TASK_STACK_DEPTH `instance.TIMER_TASK_STACK_DEPTH`
 
-// Optional APIs Inclusion specific configurations
+// Optional APIs inclusion-specific configurations
 #define INCLUDE_vTaskPrioritySet                  `(instance.vTaskPrioritySet == true) ? 1:0`
 #define INCLUDE_uxTaskPriorityGet                 `(instance.uxTaskPriorityGet == true) ? 1:0`
 #define INCLUDE_vTaskDelete                       `(instance.vTaskDelete == true) ? 1:0`
@@ -90,6 +93,7 @@
 #define INCLUDE_xTaskGetSchedulerState            `(instance.xTaskGetSchedulerState == true) ? 1:0`
 #define INCLUDE_xTaskGetCurrentTaskHandle         `(instance.xTaskGetCurrentTaskHandle == true) ? 1:0`
 #define INCLUDE_uxTaskGetStackHighWaterMark       `(instance.uxTaskGetStackHighWaterMark == true) ? 1:0`
+#define INCLUDE_uxTaskGetStackHighWaterMark2      `(instance.uxTaskGetStackHighWaterMark2 == true) ? 1:0`
 #define INCLUDE_xTaskGetIdleTaskHandle            `(instance.xTaskGetIdleTaskHandle == true) ? 1:0`
 #define INCLUDE_eTaskGetState                     `(instance.eTaskGetState == true) ? 1:0`
 #define INCLUDE_xEventGroupSetBitFromISR          `(instance.xEventGroupSetBitFromISR == true) ? 1:0`
@@ -97,7 +101,6 @@
 #define INCLUDE_xTaskAbortDelay                   `(instance.xTaskAbortDelay == true) ? 1:0`
 #define INCLUDE_xTaskGetHandle                    `(instance.xTaskGetHandle == true) ? 1:0`
 #define INCLUDE_xTaskResumeFromISR                `(instance.xTaskResumeFromISR == true) ? 1:0`
-#define INCLUDE_vTaskCleanUpResources             `(instance.vTaskCleanUpResources == true) ? 1:0`
 %
 %   }
 

@@ -3,10 +3,55 @@
 let CMDCommon = system.getScript("/kernel/freertos_tool/FREERTOSCommon.js");
 
 
+function onChangeAddTaskParams(inst, ui)
+{
+    if (inst.addTaskParams == "Constant parameter")
+    {
+        ui.taskParams.readOnly = false;
+        inst.taskParams = "<Enter Task Parameter Value>";
+    }
+    else if (inst.addTaskParams == "Variable parameter")
+    {
+        ui.taskParams.readOnly = false;
+        inst.taskParams = "<Enter Task Parameter Name>";
+    }
+    else 
+    {
+        inst.taskParams = "NULL";
+        ui.taskParams.readOnly = true;
+    }
+}
+
+
+function onValidate(inst, validation)
+{
+    if(inst.$name.length > inst.maxNameLength - 1)  
+    {
+        validation.logWarning(
+            "Name is longer than max task name length",inst,"$name");
+    }
+
+    if(inst.taskPriority > inst.maxPriority - 1)  
+    {
+        validation.logWarning(
+            "Exceeding max allowed priority",inst,"taskPriority");
+    }
+}
+
 var config = [
     {
         name: "$name",
         hidden: false,
+    },
+    {
+        name: "maxNameLength",
+        default: 0,
+        hidden: true,
+    },
+    {
+        name: "maxPriority",
+        default: 0,
+        hidden: true,
     },
     {
         name: "taskPointer",
@@ -20,9 +65,21 @@ var config = [
         default: 128,
     },
     {
+        name: "addTaskParams",
+        displayName: "Specify Task Parameters",
+        default: "Constant parameter" ,
+        options     : [
+            {name: "None (NULL parameter)"},
+            {name: "Constant parameter"},
+            {name: "Variable parameter"},
+        ],
+        onChange: onChangeAddTaskParams
+    },
+    {
         name: "taskParams",
         displayName: "Task Parameters",
         default: "NULL",
+        readOnly: false,
     },
     {
         name: "taskPriority",
@@ -81,5 +138,6 @@ var config = [
 exports = {
     displayName         : "Task",
     defaultInstanceName : "myTask",
-    config              : config
+    config              : config,
+    validate            : onValidate
 };

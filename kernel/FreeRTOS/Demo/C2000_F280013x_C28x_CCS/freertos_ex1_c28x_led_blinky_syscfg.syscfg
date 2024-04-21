@@ -33,7 +33,7 @@ cputimer1.timerInt.interruptHandler = "timer1_ISR";
 cputimer1.timerInt.enableInterrupt  = true;
 
 FREERTOS1.$name                   = "myFREERTOS0";
-FREERTOS1.CPU_CLOCK_HZ            = 200000000;
+FREERTOS1.CPU_CLOCK_HZ            = 120000000;
 FREERTOS1.MINIMAL_STACK_SIZE      = 256;
 FREERTOS1.USE_MUTEXES             = true;
 FREERTOS1.USE_RECURSIVE_MUTEXES   = true;

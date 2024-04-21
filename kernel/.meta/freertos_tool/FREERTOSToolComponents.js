@@ -10,7 +10,8 @@ if ([ "F2837xD",
       "F28002x",
       "F280013x",
       "F280015x",
-      "F28P65x"].includes(system.deviceData.device))
+      "F28P65x",
+      "F28P55x",].includes(system.deviceData.device))
 {
     freertos_export = {
         displayName: "FreeRTOS Configuration Tool",
@@ -43,6 +44,10 @@ if ([ "F2837xD",
             {
                 name      : "/kernel/freertos_tool/templates/c2000_freertos.opt.xdt",
                 outputPath: "c2000_freertos.opt",
+            },
+            {
+                name      : "/kernel/freertos_tool/templates/syscfg_c.rov.xs.xdt",
+                outputPath: "syscfg_c.rov.xs",
             },
         ],
         references: references.componentReferences,

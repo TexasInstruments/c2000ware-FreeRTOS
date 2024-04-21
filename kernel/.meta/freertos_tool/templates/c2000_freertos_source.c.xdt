@@ -14,5 +14,9 @@
 #include "`freertosPath`\FreeRTOS\Source\event_groups.c"
 #include "`freertosPath`\FreeRTOS\Source\stream_buffer.c"
 #include "`freertosPath`\FreeRTOS\Source\portable\ThirdParty\Community-Supported-Ports\CCS\C2000_C28x\port.c"
-#include "`freertosPath`\FreeRTOS\Source\portable\MemMang\heap_4.c"
+    % if (instance.SUPPORT_DYNAMIC_ALLOCATION == true)
+    %{
+        % var heapPath = instance.HEAP_TYPE;
+#include "`freertosPath`\FreeRTOS\Source\portable\MemMang\`heapPath`.c"
+    %}
 %}

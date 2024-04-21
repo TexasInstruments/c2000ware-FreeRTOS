@@ -2,11 +2,46 @@
 /*global exports, system*/
 let CMDCommon = system.getScript("/kernel/freertos_tool/FREERTOSCommon.js");
 
+function onValidate(inst, validation)
+{
+    if(inst.semType == "MUTEX_SEMAPHORE" && inst.isMutexEnabled == false)  
+    {
+        validation.logError(
+            "Mutex must be enabled in FreeRTOSConfig.h",inst);
+    }
+
+    if(inst.semType == "RECURSIVE_MUTEX_SEMAPHORE" && inst.isRecMutexEnabled == false)  
+    {
+        validation.logError(
+            "Recursive Mutex must be enabled in FreeRTOSConfig.h",inst);
+    }
+
+    if(inst.semType == "COUNTING_SEMAPHORE" && inst.isCountingSemEnabled == false)  
+    {
+        validation.logError(
+            "Counting Semaphore must be enabled in FreeRTOSConfig.h",inst);
+    }
+}
 
 var config = [
     {
         name: "$name",
         hidden: false,
+    },
+    {
+        name: "isMutexEnabled",
+        default: false,
+        hidden: true,
+    },
+    {
+        name: "isRecMutexEnabled",
+        default: false,
+        hidden: true,
+    },
+    {
+        name: "isCountingSemEnabled",
+        default: false,
+        hidden: true,
     },
     {
         name: "semType",
@@ -22,8 +57,13 @@ var config = [
         onChange: (inst, ui)=>{
             if(inst.semType == "COUNTING_SEMAPHORE")
             {
-                ui.semMaxCount.hidden = false
-                ui.semInitialCount.hidden = false
+                ui.semMaxCount.hidden = false;
+                ui.semInitialCount.hidden = false;
+            }
+            else
+            {
+                ui.semMaxCount.hidden = true;
+                ui.semInitialCount.hidden = true;
             }
         }
     },
@@ -78,5 +118,6 @@ var config = [
 exports = {
     displayName         : "Semaphore",
     defaultInstanceName : "mySemaphore",
-    config              : config
+    config              : config,
+    validate            : onValidate,
 };

@@ -201,10 +201,18 @@ extern StaticEventGroup_t `eventInstance.eventGroupBuffer`;
 %       for (var taskInstanceIndex = 0; taskInstanceIndex < numberOfTasks; taskInstanceIndex++)
 %       {
 %           var taskInstance = tasks[taskInstanceIndex];
+
 //
-// Declaration for Task function. Application needs to implement this.
+// Declaration for `taskInstance.$name` task function. Application needs to implement this.
 //
 extern void `taskInstance.taskPointer`( void * pvParameters );
+%           if(taskInstance.addTaskParams == "Variable parameter")
+%           {
+//
+// Declaration for `taskInstance.$name` task parameter. Application needs to specify this.
+//
+extern const void *`taskInstance.taskParams`;
+%           }
 %       }
 
 %       for (var timerInstanceIndex = 0; timerInstanceIndex < numberOfTimers; timerInstanceIndex++)

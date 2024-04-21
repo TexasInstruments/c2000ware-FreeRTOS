@@ -253,7 +253,7 @@ void `semaphoreInstance.$name`_init() {
 %   else if(semaphoreInstance.semType == "MUTEX_SEMAPHORE")
 %   {
     //
-    // Create the counting semaphore with static memory allocation.
+    // Create the mutex with static memory allocation.
     //
     `semaphoreInstance.semHandle` =
     xSemaphoreCreateMutexStatic(&`semaphoreInstance.semBuffer`);
@@ -281,7 +281,7 @@ void `semaphoreInstance.$name`_init() {
 %   else if(semaphoreInstance.semType == "COUNTING_SEMAPHORE")
 %   {
     //
-    // Create the counting semaphore with dyanmic memory allocation.
+    // Create the counting semaphore with dynamic memory allocation.
     //
     `semaphoreInstance.semHandle` = xSemaphoreCreateCounting(`semaphoreInstance.semMaxCount`, `semaphoreInstance.semInitialCount`);
 
@@ -297,7 +297,7 @@ void `semaphoreInstance.$name`_init() {
 %   else
 %   {
     //
-    // Create the recursive mutex with static memory allocation.
+    // Create the recursive mutex with dynamic memory allocation.
     //
     `semaphoreInstance.semHandle` = xSemaphoreCreateRecursiveMutex();
 
@@ -433,6 +433,22 @@ void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer,
 }
 
 %   }
+
+%   if(instance.CHECK_FOR_STACK_OVERFLOW > 0)
+%   {
+//
+// vApplicationStackOverflowHook - Application must provide an implementation
+// of vApplicationStackOverflowHook(), i.e. a hook function to handle stack
+// overflows if configCHECK_FOR_STACK_OVERFLOW is set to > 0.
+//
+#pragma WEAK( vApplicationStackOverflowHook )
+void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
+{
+    while(1);
+}
+
+%   }
+
 %   if((instance.SUPPORT_STATIC_ALLOCATION == true) && (instance.USE_TIMERS == true))
 %   {
 //
@@ -482,8 +498,10 @@ void FreeRTOS_init(){
     `eventName`_init();
 %   }
 
+%   if ((instance.START_SCHEDULER == true)){
     //
     // Start the scheduler
     //
     vTaskStartScheduler();
+%   }
 }

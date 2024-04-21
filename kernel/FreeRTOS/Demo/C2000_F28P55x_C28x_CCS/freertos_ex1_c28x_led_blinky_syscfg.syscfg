@@ -1,0 +1,54 @@
+
+/**
+ * Import the modules used in this configuration.
+ */
+const led       = scripting.addModule("/driverlib/board_components/led", {}, false);
+const led1      = led.addInstance();
+const led2      = led.addInstance();
+const cputimer  = scripting.addModule("/driverlib/cputimer.js", {}, false);
+const cputimer1 = cputimer.addInstance();
+const FREERTOS  = scripting.addModule("/kernel/freertos_tool/FREERTOS", {}, false);
+const FREERTOS1 = FREERTOS.addInstance();
+
+/**
+ * Write custom configuration values to the imported modules.
+ */
+led1.$name                  = "myLED1";
+led1.gpio.writeInitialValue = true;
+led1.gpio.initialValue      = 1;
+led1.gpio.gpioPin.$assign   = "GPIO31";
+
+led2.$name                  = "myLED2";
+led2.gpio.writeInitialValue = true;
+led2.gpio.initialValue      = 1;
+led2.gpio.gpioPin.$assign   = "GPIO34";
+
+cputimer1.$name                     = "timer1";
+cputimer1.cputimerBase              = "CPUTIMER1_BASE";
+cputimer1.enableInterrupt           = true;
+cputimer1.registerInterrupts        = true;
+cputimer1.timerPeriod               = 15000000;
+cputimer1.startTimer                = true;
+cputimer1.timerInt.interruptHandler = "timer1_ISR";
+cputimer1.timerInt.enableInterrupt  = true;
+
+FREERTOS1.$name                   = "myFREERTOS0";
+FREERTOS1.CPU_CLOCK_HZ            = 150000000;
+FREERTOS1.MINIMAL_STACK_SIZE      = 256;
+FREERTOS1.USE_MUTEXES             = true;
+FREERTOS1.USE_RECURSIVE_MUTEXES   = true;
+FREERTOS1.USE_COUNTING_SEMAPHORES = true;
+FREERTOS1.vTaskSuspend            = false;
+FREERTOS1.tasks.create(2);
+FREERTOS1.tasks[0].$name          = "redTask";
+FREERTOS1.tasks[0].taskPointer    = "LED_TaskRed";
+FREERTOS1.tasks[0].taskStackSize  = 256;
+FREERTOS1.tasks[0].taskPriority   = 2;
+FREERTOS1.tasks[0].taskParams     = "0xDEADBEAF";
+FREERTOS1.tasks[1].$name          = "blueTask";
+FREERTOS1.tasks[1].taskPointer    = "LED_TaskBlue";
+FREERTOS1.tasks[1].taskStackSize  = 256;
+FREERTOS1.tasks[1].taskPriority   = 1;
+FREERTOS1.tasks[1].taskParams     = "0xBAADF00D";
+FREERTOS1.semaphores.create(1);
+FREERTOS1.semaphores[0].$name     = "binarySem1";

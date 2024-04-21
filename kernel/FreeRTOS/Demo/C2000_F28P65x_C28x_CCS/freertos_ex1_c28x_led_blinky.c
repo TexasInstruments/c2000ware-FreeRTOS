@@ -32,12 +32,18 @@
 
 static StaticTask_t redTaskBuffer;
 static StackType_t  redTaskStack[STACK_SIZE];
+#pragma DATA_SECTION(redTaskStack,   ".freertosStaticStack")
+#pragma DATA_ALIGN ( redTaskStack , portBYTE_ALIGNMENT )
 
 static StaticTask_t blueTaskBuffer;
 static StackType_t  blueTaskStack[STACK_SIZE];
+#pragma DATA_SECTION(blueTaskStack,   ".freertosStaticStack")
+#pragma DATA_ALIGN ( blueTaskStack , portBYTE_ALIGNMENT )
 
 static StaticTask_t idleTaskBuffer;
 static StackType_t  idleTaskStack[STACK_SIZE];
+#pragma DATA_SECTION(idleTaskStack,   ".freertosStaticStack")
+#pragma DATA_ALIGN ( idleTaskStack , portBYTE_ALIGNMENT )
 
 static SemaphoreHandle_t xSemaphore = NULL;
 static StaticSemaphore_t xSemaphoreBuffer;
