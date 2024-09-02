@@ -18,6 +18,8 @@ List of devices supported
 - [F280013x](https://www.ti.com/product/TMS320F2800137)
 - [F28003x](https://www.ti.com/product/TMS320F280039C)
 - [F28002x](https://www.ti.com/product/TMS320F280025C)
+- [F28004x](https://www.ti.com/product/TMS320F280049C)
+- [F2837xs](https://www.ti.com/product/TMS320F28377S)
 - [F2838x](https://www.ti.com/product/TMS320F28388D).
 - [F28P65x](https://www.ti.com/product/TMS320F28P650DK).
 - [F28P55x](https://www.ti.com/product/TMS320F28P559SJ-Q1).
