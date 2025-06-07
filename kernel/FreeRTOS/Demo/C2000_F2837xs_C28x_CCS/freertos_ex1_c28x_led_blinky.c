@@ -171,7 +171,7 @@ void LED_TaskBlue(void * pvParameters)
 }
 
 //-------------------------------------------------------------------------------------------------
-void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize )
+void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, configSTACK_DEPTH_TYPE *pulIdleTaskStackSize )
 {
     *ppxIdleTaskTCBBuffer = &idleTaskBuffer;
     *ppxIdleTaskStackBuffer = idleTaskStack;

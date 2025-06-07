@@ -20,6 +20,9 @@ led2.gpio.writeInitialValue = true;
 led2.gpio.initialValue      = 1;
 led2.gpio.gpioPin.$assign   = "GPIO13";
 
+const divider3       = system.clockTree["EPWMCLKDIV"];
+divider3.divideValue = 2;
+
 FREERTOS1.$name                           = "myFREERTOS0";
 FREERTOS1.USE_MUTEXES                     = true;
 FREERTOS1.START_SCHEDULER                 = false;

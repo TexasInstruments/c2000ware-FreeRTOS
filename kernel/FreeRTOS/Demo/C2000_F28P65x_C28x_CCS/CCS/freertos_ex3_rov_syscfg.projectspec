@@ -2,7 +2,7 @@
   <project
         name="freertos_ex3_rov_syscfg"
         device="Generic C28xx Device"
-        cgtVersion="22.6.0.LTS"
+        cgtVersion="22.6.2.LTS"
         products="sysconfig;C2000WARE"
         outputFormat="ELF"
         launchWizard="False"

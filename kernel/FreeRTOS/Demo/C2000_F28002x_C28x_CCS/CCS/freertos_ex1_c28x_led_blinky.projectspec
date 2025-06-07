@@ -2,7 +2,7 @@
   <project
         name="freertos_ex1_c28x_led_blinky"
         device="TMS320F280025C"
-        cgtVersion="22.6.0.LTS"
+        cgtVersion="22.6.2.LTS"
         outputFormat="ELF"
         launchWizard="False"
         linkerCommandFile=""

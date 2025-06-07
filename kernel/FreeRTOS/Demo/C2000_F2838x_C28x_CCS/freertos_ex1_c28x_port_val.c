@@ -56,7 +56,7 @@
 //
 //
 // $Copyright:
-// Copyright (C) 2022 Texas Instruments Incorporated - http://www.ti.co/
+// Copyright (C) 2022 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -131,10 +131,10 @@ void vApplicationIdleHook( void );
 void vApplicationTickHook(void);
 void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer,
                                      StackType_t **ppxTimerTaskStackBuffer,
-                                     uint32_t *pulTimerTaskStackSize );
+                                     configSTACK_DEPTH_TYPE *pulTimerTaskStackSize );
 void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer,
                                     StackType_t **ppxIdleTaskStackBuffer,
-                                    uint32_t *pulIdleTaskStackSize );
+                                    configSTACK_DEPTH_TYPE *pulIdleTaskStackSize );
 void vMainAssertCalled( const char *pcFileName, uint32_t ulLineNumber );
 void vMainToggleLED( void );
 #if defined(__TI_EABI__)
@@ -215,6 +215,9 @@ void main(void)
     //
     assert(freopen("uart:", "w", stdout) != NULL);
 
+    /* Stop compiler warnings. */
+    ( void ) uart;
+
     //
     // Uncomment to check printf() functionality
     // if no output is seen on COM port.
@@ -234,7 +237,7 @@ void main(void)
 //
 void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer,
                                     StackType_t **ppxIdleTaskStackBuffer,
-                                    uint32_t *pulIdleTaskStackSize )
+                                    configSTACK_DEPTH_TYPE *pulIdleTaskStackSize )
 {
     /* If the buffers to be provided to the Idle task are declared inside this
     function then they must be declared static - otherwise they will be allocated on
@@ -260,7 +263,7 @@ void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer,
 //
 void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer,
                                      StackType_t **ppxTimerTaskStackBuffer,
-                                     uint32_t *pulTimerTaskStackSize )
+                                     configSTACK_DEPTH_TYPE *pulTimerTaskStackSize )
 {
     /* If the buffers to be provided to the Timer task are declared inside this
     function then they must be declared static - otherwise they will be allocated on

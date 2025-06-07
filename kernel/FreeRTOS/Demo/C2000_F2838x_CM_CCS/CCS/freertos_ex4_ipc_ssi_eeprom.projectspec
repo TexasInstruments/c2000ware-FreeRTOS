@@ -2,7 +2,7 @@
   <project
         name="freertos_ex4_ipc_ssi_eeprom_cpu1"
         device="TMS320F28388D"
-        cgtVersion="22.6.0.LTS"
+        cgtVersion="22.6.2.LTS"
         outputFormat="ELF"
         launchWizard="False"
         linkerCommandFile=""
@@ -28,7 +28,7 @@
   <project
         name="freertos_ex4_ipc_ssi_eeprom_cm"
         device="Cortex M.TMS320F28388D"
-        cgtVersion="20.2.6.LTS"
+        cgtVersion="22.6.2.LTS"
         endianness="little"
         launchWizard="False"
         linkerCommandFile=""

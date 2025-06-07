@@ -457,7 +457,7 @@ var config = [
                 name: "xTaskGetCurrentTaskHandle",
                 displayName: "xTaskGetCurrentTaskHandle",
                 description: "",
-                default: false
+                default: true
             },
             {
                 name: "uxTaskGetStackHighWaterMark",

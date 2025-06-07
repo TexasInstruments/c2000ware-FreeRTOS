@@ -24,7 +24,7 @@
 //
 //
 // $Copyright:
-// Copyright (C) 2022 Texas Instruments Incorporated - http://www.ti.co/
+// Copyright (C) 2022 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -137,7 +137,7 @@ void ledTask2Func(void *pvParameters);
 //
 void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer,
                                     StackType_t **ppxIdleTaskStackBuffer,
-                                    uint32_t *pulIdleTaskStackSize )
+                                    configSTACK_DEPTH_TYPE *pulIdleTaskStackSize )
 {
     *ppxIdleTaskTCBBuffer = &idleTaskBuffer;
     *ppxIdleTaskStackBuffer = idleTaskStack;

@@ -246,13 +246,13 @@ void `eventName`_init();
 %   {
 void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer,
                                     StackType_t **ppxIdleTaskStackBuffer,
-                                    uint32_t *pulIdleTaskStackSize );
+                                    configSTACK_DEPTH_TYPE *pulIdleTaskStackSize );
 %   }
 %   if((instance.SUPPORT_STATIC_ALLOCATION == true) && (instance.USE_TIMERS == true))
 %   {
 void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer,
                                      StackType_t **ppxTimerTaskStackBuffer,
-                                     uint32_t *pulTimerTaskStackSize );
+                                     configSTACK_DEPTH_TYPE *pulTimerTaskStackSize );
 %   }
 void vApplicationSetupTimerInterrupt( void );
 void FreeRTOS_init();
