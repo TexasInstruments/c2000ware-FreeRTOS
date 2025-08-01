@@ -20,6 +20,7 @@
 ; link: http://www.freertos.org/a00114.html
 ;-------------------------------------------------------------------------------------------------
 
+  .cdecls C,LIST,"portdefines.h"
   .if __TI_EABI__                      
   .asg    pxCurrentTCB, _pxCurrentTCB
   .asg    bYield, _bYield
@@ -162,6 +163,9 @@ SAVE_IER:
   LCR     _xTaskIncrementTick
 
 RESET_YIELD_FLAG:
+; If bYield is 1, ack interrupt
+  MOV     @AL, #PORT_PIE_ACK_YIELD
+  MOV     *(0:0x0ce1), @AL
 ; Save bYield in AR1 and clear it in memory.
   MOV     AR1, ACC
   MOV     ACC, #0
@@ -325,6 +329,9 @@ SAVE_IER:
   LCR     _xTaskIncrementTick
 
 RESET_YIELD_FLAG:
+; If bYield is 1, ack interrupt
+  MOV     @AL, #PORT_PIE_ACK_YIELD
+  MOV     *(0:0x0ce1), @AL
 ; Save bYield in AR1 and clear it in memory.
   MOV     AR1, ACC
   MOV     ACC, #0

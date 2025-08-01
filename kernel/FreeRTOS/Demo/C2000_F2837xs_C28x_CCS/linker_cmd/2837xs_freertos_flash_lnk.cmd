@@ -78,7 +78,7 @@ PAGE 1 : /* Data Memory */
 SECTIONS
 {
    /* Allocate program areas: */
-   .cinit              : > FLASHB      PAGE = 0, ALIGN(8)
+   .cinit              : > FLASHB | FLASHC,   PAGE = 0, ALIGN(8)
    .pinit              : > FLASHB,     PAGE = 0, ALIGN(8)
    .text               : >> FLASHB | FLASHC | FLASHD | FLASHE      PAGE = 0, ALIGN(8)
    codestart           : > BEGIN       PAGE = 0, ALIGN(8)

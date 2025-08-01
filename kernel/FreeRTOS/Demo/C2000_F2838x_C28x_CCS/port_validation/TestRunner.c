@@ -70,6 +70,7 @@
  * Check free heap size
  */
 size_t freeHeapVar = 0, freeHeapMinVar = 0;
+volatile uint32_t loopCount = 0;
 
 /*
  * Toggles the LED built onto the Launchpad hardware.
@@ -675,6 +676,7 @@ const TickType_t xCycleFrequency = pdMS_TO_TICKS( 5000UL );
 		if(strcmp("No errors", pcStatusMessage) == 0)
 		{
 		    printf("No errors \r\n");
+			loopCount++;
 		}
 //		configPRINTF( ( "%s \r\n", pcStatusMessage ) );
 

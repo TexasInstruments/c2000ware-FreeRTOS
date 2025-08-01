@@ -23,6 +23,7 @@ List of devices supported
 - [F2838x](https://www.ti.com/product/TMS320F28388D).
 - [F28P65x](https://www.ti.com/product/TMS320F28P650DK).
 - [F28P55x](https://www.ti.com/product/TMS320F28P559SJ-Q1).
+- [F28E12x](https://www.ti.com/product/TMS320F28E120SBS).
 
 
 ## Repository Layout

@@ -34,5 +34,6 @@
     <file action="link" path="${FreeRTOS_SOURCE_PORT}/port.c" targetDirectory="FreeRTOS/port" />
     <file action="link" path="${FreeRTOS_SOURCE_PORT}/portasm.asm" targetDirectory="FreeRTOS/port" />
     <file action="link" path="${FreeRTOS_SOURCE_PORT}/portmacro.h" targetDirectory="FreeRTOS/port" />
+    <file action="link" path="${FreeRTOS_SOURCE_PORT}/portdefines.h" targetDirectory="FreeRTOS/port" />
   </project>
 </projectSpec>

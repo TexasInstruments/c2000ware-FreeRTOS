@@ -42,5 +42,6 @@
 	<file action="link" path="${Free_RTOS}/portable/CCS/C2000_C28x/port.c" targetDirectory="FreeRTOS/port" />
 	<file action="link" path="${Free_RTOS}/portable/CCS/C2000_C28x/portasm.asm" targetDirectory="FreeRTOS/port" />
 	<file action="link" path="${Free_RTOS}/portable/CCS/C2000_C28x/portmacro.h" targetDirectory="FreeRTOS/port" />
+  <file action="link" path="${Free_RTOS}/portable/CCS/C2000_C28x/portdefines.h" targetDirectory="FreeRTOS/port" />
   </project>
 </projectSpec>
