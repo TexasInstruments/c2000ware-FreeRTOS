@@ -71,7 +71,7 @@ var config = [
                 name: "CPU_CLOCK_HZ" ,
                 displayName: "CPU Clock Hz",
                 description: "",
-                default: 100000000,
+                default: (Common.getSYSCLK()*1e6) ?? 100000000,
             },
             {
                 name: "TICK_RATE_HZ" ,

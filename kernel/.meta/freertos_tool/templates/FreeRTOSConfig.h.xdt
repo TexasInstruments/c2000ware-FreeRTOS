@@ -23,6 +23,10 @@
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 %   var module = system.modules['/kernel/freertos_tool/FREERTOS'];
 %   if (module != null)
 %   {
@@ -107,6 +111,9 @@
 // Set the following definitions to 1 to include the API function, or zero
 // to exclude the API function.
 
+#ifdef __cplusplus
+} /* extern C */
+#endif
 
 #endif /* FREERTOS_CONFIG_H */
 

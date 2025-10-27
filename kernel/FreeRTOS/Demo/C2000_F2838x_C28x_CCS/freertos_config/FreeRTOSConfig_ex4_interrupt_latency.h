@@ -23,6 +23,10 @@
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*-----------------------------------------------------------
  * Application specific definitions.
  *
@@ -177,5 +181,10 @@ machine on which the test is developed). */
 #define configSTART_REGISTER_TESTS                1
 #define configSTART_DELETE_SELF_TESTS             1
 #endif
+
+#ifdef __cplusplus
+} /* extern C */
+#endif
+
 #endif /* FREERTOS_CONFIG_H */
 

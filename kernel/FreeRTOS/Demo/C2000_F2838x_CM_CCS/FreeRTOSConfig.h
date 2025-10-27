@@ -23,6 +23,10 @@
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*-----------------------------------------------------------
  * Application specific definitions.
  *
@@ -72,5 +76,9 @@ to exclude the API function. */
  */
 #define configKERNEL_INTERRUPT_PRIORITY         ( 7 << 5 )    /* Priority 7, or 0xE0 as only the top three bits are implemented.  This is the lowest priority. */
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY     ( 5 << 5 )  /* Priority 5, or 0xA0 as only the top three bits are implemented. */
+
+#ifdef __cplusplus
+} /* extern C */
+#endif
 
 #endif /* FREERTOS_CONFIG_H */

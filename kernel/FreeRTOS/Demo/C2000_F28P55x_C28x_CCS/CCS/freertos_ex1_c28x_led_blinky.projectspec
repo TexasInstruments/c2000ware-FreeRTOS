@@ -20,17 +20,23 @@
 
     <pathVariable name="C2000WARE_ROOT" path="../../../../../" scope="project" />
     <pathVariable name="C2000WARE_DLIB_ROOT" path="${C2000WARE_ROOT}/driverlib/f28p55x/driverlib" scope="project" />
+    <pathVariable name="CLB_SYSCFG_ROOT" path="../../../../../../utilities/clb_tool/clb_syscfg/" scope="project" />
+    <pathVariable name="SYSTEMC_INSTALL" path="../../../../../../utilities/clb_tool/clb_syscfg/systemc-2.3.3" scope="project" />
+    <pathVariable name="CLB_SIM_COMPILER" path="C:/TDM-GCC-64/bin" scope="project" />
+    <buildVariable name="CLB_DEBUG" value="0" scope="project" />
+    <buildVariable name="GENERATE_DIAGRAM" value="0" scope="project" />
+
     <pathVariable name="Free_RTOS" path="../../../Source/" scope="project" />
     <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p55x/common/include/driverlib.h" targetDirectory="device" />
     <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p55x/common/include/device.h" targetDirectory="device" />
     <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p55x/common/source/device.c" targetDirectory="device" />
     <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p55x/common/targetConfigs/TMS320F28P550SJ9.ccxml" targetDirectory="targetConfigs" />
-    <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p55x/common/cmd/28p55x_generic_ram_lnk.cmd" targetDirectory="" applicableConfigurations="CPU1_RAM" />
-    <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p55x/common/cmd/28p55x_generic_flash_lnk.cmd" targetDirectory="" applicableConfigurations="CPU1_FLASH" />
     <file action="copy" path="${C2000WARE_DLIB_ROOT}/" targetDirectory="device" excludeFromBuild="True" />
     <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p55x/common/source/f28p55x_codestartbranch.asm" targetDirectory="device" />
     <file action="link" path="${C2000WARE_DLIB_ROOT}/ccs/Debug/driverlib.lib" targetDirectory="" />
     <file action="copy" path="../freertos_ex1_c28x_led_blinky.c" targetDirectory="" />
+    <file action="copy" path="../linker_cmd/28p55x_freertos_ram_lnk.cmd" targetDirectory="" applicableConfigurations="CPU1_RAM" />
+    <file action="copy" path="../linker_cmd/28p55x_freertos_flash_lnk.cmd" targetDirectory="" applicableConfigurations="CPU1_FLASH" />
 	<file action="copy" path="../FreeRTOSConfig.h" targetDirectory="" />
 	<file action="link" path="${Free_RTOS}/tasks.c" targetDirectory="FreeRTOS" />
 	<file action="link" path="${Free_RTOS}/queue.c" targetDirectory="FreeRTOS" />

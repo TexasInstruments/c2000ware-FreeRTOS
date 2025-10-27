@@ -23,6 +23,10 @@
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //--------------------------------------------------------------------------------------------------
 // Application specific definitions.
 //
@@ -70,6 +74,10 @@
 #define INCLUDE_vTaskDelayUntil             1
 #define INCLUDE_vTaskDelay                  1
 #define INCLUDE_uxTaskGetStackHighWaterMark 1
+
+#ifdef __cplusplus
+} /* extern C */
+#endif
 
 #endif /* FREERTOS_CONFIG_H */
 

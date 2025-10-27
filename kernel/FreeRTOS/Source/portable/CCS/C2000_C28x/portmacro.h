@@ -23,6 +23,10 @@
 #ifndef PORTMACRO_H
 #define PORTMACRO_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //-------------------------------------------------------------------------------------------------
 // Port specific definitions.
 //
@@ -99,5 +103,9 @@ extern volatile uint16_t bYield;
 //-------------------------------------------------------------------------------------------------
 #define portTASK_FUNCTION_PROTO( vFunction, pvParameters ) void vFunction( void *pvParameters )
 #define portTASK_FUNCTION( vFunction, pvParameters ) void vFunction( void *pvParameters )
+
+#ifdef __cplusplus
+} /* extern C */
+#endif
 
 #endif /* PORTMACRO_H */
