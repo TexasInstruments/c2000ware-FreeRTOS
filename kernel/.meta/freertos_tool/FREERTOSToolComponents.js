@@ -12,6 +12,7 @@ if ([ "F2837xD",
       "F280015x",
       "F28P65x",
       "F28P55x",
+      "F28P551x",
       "F28E12x"].includes(system.deviceData.device))
 {
     freertos_export = {
