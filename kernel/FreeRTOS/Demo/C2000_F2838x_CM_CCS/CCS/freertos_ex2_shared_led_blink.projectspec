@@ -26,7 +26,8 @@
     <file action="copy" path="../freertos_ex2_shared_led_blink_cpu1.c" targetDirectory="" />
   </project>
   <project
-        name="freertos_ex2_shared_led_blink_cm"        device="Cortex M.TMS320F28388D"
+        name="freertos_ex2_shared_led_blink_cm" 
+        device="Cortex M.TMS320F28388D"
         cgtVersion="20.2.6.LTS"
         endianness="little"
         launchWizard="False"
