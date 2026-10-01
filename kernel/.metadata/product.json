@@ -1,7 +1,7 @@
 {
     "name"       : "FREERTOS Tool",
     "displayName": "FREERTOS Tool",
-    "version"    : "0.0.1",
+    "version"    : "0.1.0",
     "documentationPath": "../doc",
 
     "includePaths":
@@ -27,6 +27,7 @@
         "F28P65x",
         "F28P55x",
         "F28P551x",
-        "F28E12x"
+        "F28E12x",
+        "MCPC029"
     ]
 }

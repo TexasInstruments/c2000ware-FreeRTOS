@@ -13,7 +13,8 @@ if ([ "F2837xD",
       "F28P65x",
       "F28P55x",
       "F28P551x",
-      "F28E12x"].includes(system.deviceData.device))
+      "F28E12x",
+      "MCPC029"].includes(system.deviceData.device))
 {
     freertos_export = {
         displayName: "FreeRTOS Configuration Tool",

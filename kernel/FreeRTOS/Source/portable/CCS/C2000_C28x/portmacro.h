@@ -64,12 +64,14 @@ typedef portSTACK_TYPE StackType_t;
 typedef int16_t        BaseType_t;
 typedef uint16_t       UBaseType_t;
 
-#if( configUSE_16_BIT_TICKS == 1 )
-  typedef uint16_t TickType_t;
-  #define portMAX_DELAY ( TickType_t ) 0xffff
+#if ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS )
+    typedef uint16_t        TickType_t;
+    #define portMAX_DELAY   ( TickType_t ) 0xffff
+#elif ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_32_BITS )
+    typedef uint32_t        TickType_t;
+    #define portMAX_DELAY   ( TickType_t ) 0xffffffffUL
 #else
-  typedef uint32_t TickType_t;
-  #define portMAX_DELAY ( TickType_t ) 0xffffffffUL
+    #error configTICK_TYPE_WIDTH_IN_BITS set to unsupported tick type width.
 #endif
 
 //-------------------------------------------------------------------------------------------------
@@ -83,19 +85,20 @@ typedef uint16_t       UBaseType_t;
 //-------------------------------------------------------------------------------------------------
 extern void vPortEnterCritical( void );
 extern void vPortExitCritical( void );
+
 #define portENTER_CRITICAL()  vPortEnterCritical()
 #define portEXIT_CRITICAL()   vPortExitCritical()
 
 //-------------------------------------------------------------------------------------------------
 // Task utilities.
 //-------------------------------------------------------------------------------------------------
-#define portYIELD()             {bYield = 0x1; HWREGH(PORT_PIE_O_FLAG) |= PORT_PIE_FLAG_YIELD; asm(" RPT #9 || NOP");}
-#define portYIELD_FROM_ISR( x ) {if (x != pdFALSE) portYIELD()}
+#define portYIELD()             { HWREGH(PORT_PIE_O_FLAG) |= PORT_PIE_FLAG_YIELD; asm(" RPT #9 || NOP"); }
+#define portYIELD_FROM_ISR( x ) { if (x != pdFALSE) portYIELD() }
 
 extern void portTICK_ISR( void );
+extern void portYIELD_ISR( void );
 extern void portRESTORE_FIRST_CONTEXT( void );
 extern void vTaskSwitchContext( void );
-extern volatile uint16_t bYield;
 
 //-------------------------------------------------------------------------------------------------
 // Hardware specifics.
@@ -104,6 +107,28 @@ extern volatile uint16_t bYield;
 #define portSTACK_GROWTH        ( 1 )
 #define portTICK_PERIOD_MS      ( ( TickType_t ) 1000 / configTICK_RATE_HZ )
 #define portNOP()               __asm(" NOP")
+
+//-------------------------------------------------------------------------------------------------
+// Architecture specific optimisations.
+//-------------------------------------------------------------------------------------------------
+#if configUSE_PORT_OPTIMISED_TASK_SELECTION == 1
+
+    extern uint16_t portGET_HIGHEST_PRIORITY (uint32_t readyPrioritiesBitMap);
+
+    /* Check the configuration. */
+    #if( configMAX_PRIORITIES > 31 )
+        #error configUSE_PORT_OPTIMISED_TASK_SELECTION can only be set to 1 when configMAX_PRIORITIES is less than or equal to 31.
+    #endif
+
+    /* Store/clear the ready priorities in a bit map. */
+    #define portRECORD_READY_PRIORITY( uxPriority, uxReadyPriorities )      uxReadyPriorities |=  ( 1UL << ( uxPriority ) )
+    #define portRESET_READY_PRIORITY( uxPriority, uxReadyPriorities )       uxReadyPriorities &= ~( 1UL << ( uxPriority ) )
+
+    /*-----------------------------------------------------------*/
+
+    #define portGET_HIGHEST_PRIORITY( uxTopPriority, uxReadyPriorities ) uxTopPriority = portGET_HIGHEST_PRIORITY(uxReadyPriorities)
+
+#endif /* configUSE_PORT_OPTIMISED_TASK_SELECTION */
 
 //-------------------------------------------------------------------------------------------------
 // Task function macros as described on the FreeRTOS.org WEB site.

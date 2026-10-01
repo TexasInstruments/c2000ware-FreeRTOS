@@ -2,7 +2,7 @@
   <project
         name="freertos_ex1_c28x_led_blinky_syscfg"
         device="Generic C28xx Device"
-        cgtVersion="22.6.3.LTS"
+        cgtVersion="25.11.1.LTS"
         products="sysconfig;C2000WARE"
         outputFormat="ELF"
         launchWizard="False"
@@ -30,7 +30,7 @@
     <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p551x/common/include/driverlib.h" targetDirectory="device" />
     <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p551x/common/include/device.h" targetDirectory="device" />
     <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p551x/common/source/device.c" targetDirectory="device" />
-    <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p551x/common/targetConfigs/TMS320F28P551SG5PZ.ccxml" targetDirectory="targetConfigs" />
+    <file action="copy" path="${C2000WARE_ROOT}/device_support/f28p551x/common/targetConfigs/TMS320F28P551SG5.ccxml" targetDirectory="targetConfigs" />
     <file action="copy" path="../linker_cmd/28p551x_freertos_ram_lnk.cmd" targetDirectory="" applicableConfigurations="CPU1_RAM" />
     <file action="copy" path="../linker_cmd/28p551x_freertos_flash_lnk.cmd" targetDirectory="" applicableConfigurations="CPU1_FLASH" />
     <file action="copy" path="${C2000WARE_DLIB_ROOT}/" targetDirectory="device" excludeFromBuild="True" />

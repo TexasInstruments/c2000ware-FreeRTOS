@@ -1,7 +1,5 @@
 "use strict";
 /*global exports, system*/
-let CMDCommon = system.getScript("/kernel/freertos_tool/FREERTOSCommon.js");
-
 
 var config = [
     {
@@ -15,7 +13,8 @@ var config = [
     },
     {
         name: "queueItemSize",
-        displayName: "Queue Item Size (bytes)",
+        displayName: "Queue Item Size (in bytes)",
+        description: "The number of bytes each item in the queue will require",
         default: "sizeof(uint16_t)",
     },
     {
@@ -61,9 +60,7 @@ var config = [
     }
 ];
 
-
-
-// Define the common/portable base Watchdog
+// Define the common/portable base Queue
 exports = {
     displayName         : "Queue",
     defaultInstanceName : "myQueue",

@@ -1,6 +1,5 @@
 "use strict";
 /*global exports, system*/
-let CMDCommon = system.getScript("/kernel/freertos_tool/FREERTOSCommon.js");
 
 function onValidate(inst, validation)
 {
@@ -111,8 +110,6 @@ var config = [
         }
     }
 ];
-
-
 
 // Define the common/portable base Semaphore
 exports = {

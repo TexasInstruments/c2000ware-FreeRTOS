@@ -449,6 +449,40 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
 
 %   }
 
+%   if(instance.USE_MALLOC_FAILED_HOOK == true)
+%   {
+//
+// vApplicationMallocFailedHook - Application must provide an implementation
+// of vApplicationMallocFailedHook(), i.e. a hook function to handle failure
+// of pvPortMalloc(), if configUSE_MALLOC_FAILED_HOOK is set to 1.
+//
+#pragma WEAK( vApplicationMallocFailedHook )
+void vApplicationMallocFailedHook( void )
+{
+    while(1);
+}
+
+%   }
+
+%   if(instance.USE_DAEMON_TASK_STARTUP_HOOK == true)
+%   {
+//
+// vApplicationDaemonTaskStartupHook - Application must provide an implementation
+// of vApplicationDaemonTaskStartupHook() if USE_DAEMON_TASK_STARTUP_HOOK
+// is set to 1.
+// This hook function will be called exactly once when the RTOS daemon task
+// (also known as the timer service task) executes for the first time. Any 
+// application initialisation code that needs the RTOS to be running can be placed
+//  in the hook function.
+//
+#pragma WEAK( vApplicationDaemonTaskStartupHook )
+void vApplicationDaemonTaskStartupHook( void )
+{
+    asm(" RPT #5 || NOP");
+}
+
+%   }
+
 %   if((instance.SUPPORT_STATIC_ALLOCATION == true) && (instance.USE_TIMERS == true))
 %   {
 //

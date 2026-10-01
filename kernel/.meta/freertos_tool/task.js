@@ -1,7 +1,5 @@
 "use strict";
 /*global exports, system*/
-let CMDCommon = system.getScript("/kernel/freertos_tool/FREERTOSCommon.js");
-
 
 function onChangeAddTaskParams(inst, ui)
 {
@@ -61,7 +59,7 @@ var config = [
     },
     {
         name: "taskStackSize",
-        displayName: "Task Stack Size(words)",
+        displayName: "Task Stack Size (in words)",
         default: 128,
     },
     {
@@ -131,8 +129,6 @@ var config = [
         }
     },
 ];
-
-
 
 // Define the common/portable base Task
 exports = {

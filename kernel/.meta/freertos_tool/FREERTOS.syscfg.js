@@ -2,7 +2,6 @@
 /*global exports, system*/
 let Common   = system.getScript("/driverlib/Common.js");
 let Pinmux   = system.getScript("/driverlib/pinmux.js");
-let CMDCommon = system.getScript("/kernel/freertos_tool/FREERTOSCommon.js");
 
 /* Intro splash on GUI */
 let longDescription = `FreeRTOS Configuration Tool`;
@@ -47,7 +46,7 @@ var config = [
     {
         name: "enableROV",
         displayName: "Enable ROV settings",
-        description: "ROV/RTOS Objects is a debugging tool part of CCS",
+        description: "ROV/RTOS Objects is a debugging tool part of CCS v20+",
         onChange: onChangeEnableROV,
         default: false,
     },
@@ -71,7 +70,7 @@ var config = [
                 name: "CPU_CLOCK_HZ" ,
                 displayName: "CPU Clock Hz",
                 description: "",
-                default: (Common.getSYSCLK()*1e6) ?? 100000000,
+                default: (Common.getSYSCLK()*1e6) ?? 100e6,
             },
             {
                 name: "TICK_RATE_HZ" ,
@@ -87,7 +86,7 @@ var config = [
             },
             {
                 name: "MINIMAL_STACK_SIZE" ,
-                displayName: "Minimal Stack Size",
+                displayName: "Minimal Stack Size (in words)",
                 description: "",
                 default: 128,
             },
@@ -125,7 +124,7 @@ var config = [
                 name: "USE_PORT_OPTIMISED_TASK_SELECTION" ,
                 displayName: "Use Port Optimised Task Selection",
                 description: "",
-                default: false,
+                default: true,
             },
             {
                 name: "USE_TICKLESS_IDLE" ,
@@ -195,7 +194,7 @@ var config = [
             {
                 name: "ENABLE_BACKWARD_COMPATIBILITY" ,
                 displayName: "Enable Backward Compatibility",
-                description: "",
+                description: "The FreeRTOS.h header file includes a set of #define macros that map the names of data types used in versions of FreeRTOS prior to version 8.0.0 to the names used in FreeRTOS version 8.0.0",
                 default: false,
             },
             {
@@ -211,10 +210,11 @@ var config = [
                 default: true,
             },
             {
-                name: "RECORD_STACK_HIGH_ADDRESS" ,
+                name: "RECORD_STACK_HIGH_ADDRESS" ,         // Redundant for ports where stack grows low to high memory like C28x. Hiding to preserve compatibility
                 displayName: "Record Stack High Address",
                 description: "",
                 default: false,
+                hidden: true
             },
         ]
     },
@@ -248,7 +248,7 @@ var config = [
             {
                 name: "HEAP_TYPE" ,
                 displayName: "Heap Type",
-                description: "",
+                description: "Select FreeRTOS Heap type to be used for dynamic allocation",
                 default: "heap_4",
                 options: [
                     {name: "heap_1", displayName: "Heap 1"},
@@ -259,8 +259,14 @@ var config = [
                 ]
             },
             {
+                name: "TOTAL_HEAP_SIZE" ,
+                displayName: "Total Heap Size",
+                description: "",
+                default: 1024,
+            },
+            {
                 name: "APPLICATION_ALLOCATED_HEAP" ,
-                displayName: "Application Allocated Heap",
+                displayName: "Use Application Allocated Heap",
                 description: "",
                 default: true,
             },
@@ -270,13 +276,6 @@ var config = [
                 description: "",
                 default: false,
             },
-            {
-                name: "TOTAL_HEAP_SIZE" ,
-                displayName: "Total Heap Size",
-                description: "",
-                default: 1024,
-            },
-
         ]
     },
     {
@@ -299,24 +298,24 @@ var config = [
             {
                 name: "CHECK_FOR_STACK_OVERFLOW" ,
                 displayName: "Check For Stack Overflow",
-                description: "",
+                description: "vApplicationStackOverflowHook callback must be implemented in application",
                 default: 0,
                 options: [
-                    {name: 0, displayName: "0 (Disabled)"},
-                    {name: 1, displayName: "1"},
-                    {name: 2, displayName: "2"},
+                    {name: 0, displayName: "Disabled"},
+                    {name: 1, displayName: "Method 1"},
+                    {name: 2, displayName: "Method 2"},
                 ]
             },
             {
                 name: "USE_MALLOC_FAILED_HOOK" ,
                 displayName: "Use Malloc Failed Hook",
-                description: "",
+                description: "vApplicationMallocFailedHook callback must be implemented in application",
                 default: false,
             },
             {
                 name: "USE_DAEMON_TASK_STARTUP_HOOK" ,
                 displayName: "Use Daemon Task Startup Hook",
-                description: "",
+                description: "vApplicationDaemonTaskStartupHook callback must be implemented in application",
                 default: false,
             },
         ]
@@ -386,12 +385,12 @@ var config = [
             {
                 name: "TIMER_QUEUE_LENGTH",
                 displayName: "Timer Queue Length",
-                description: "",
+                description: "Max number of unprocessed commands that the timer command queue can hold at any one time",
                 default: 10
             },
             {
                 name: "TIMER_TASK_STACK_DEPTH",
-                displayName: "Timer Task Stack Depth",
+                displayName: "Timer Task Stack Depth (in words)",
                 description: "",
                 default: 0
             },
@@ -513,18 +512,11 @@ var config = [
                 description: "",
                 default: false
             },
-            /* {
-                name: "vTaskCleanUpResources",          // Obsolete API
-                displayName: "vTaskCleanUpResources",
-                description: "",
-                default: false
-            }, */
         ]
     }
  ]
 },
 ];
-
 
 var moduleInstances = (inst) => {
     var mods = []
@@ -580,7 +572,7 @@ var moduleInstances = (inst) => {
     mods.push({
         name: "tickTimer",
         displayName: "Tick Timer",
-        description: "The CPU Timer used for FreeRTOS tick (Configured as part of xPortStartScheduler function)",
+        description: "CPUTimer used for FreeRTOS tick. NOTE: The actual timer setup is done in port.c, timer is added here to reserve instance in SysConfig",
         moduleName: "/driverlib/cputimer.js",
         requiredArgs: {
             $name              : "timer2",
@@ -606,34 +598,8 @@ var CPUTIMER_INSTANCE = [
     { name: "CPUTIMER2_BASE", displayName: "CPUTIMER2"},
 ]
 
-function sharedModuleInstances (inst)
-{
-    var sharedModules = []
-    // sharedModules = sharedModules.concat([{
-    //     name: "tickTimer",
-    //     displayName: "Tick Timer",
-    //     description: "The CPU Timer used for FreeRTOS tick",
-    //     moduleName: "/driverlib/cputimer.js",
-    //     requiredArgs: {
-    //         $name              : "timer2",
-    //         cputimerBase       : CPUTIMER_INSTANCE[2].name,
-    //         enableInterrupt    : true,
-    //         registerInterrupts : true,
-    //         startTimer         : false,
-    //     }
-    // }])
-
-    return sharedModules;
-}
-
 function onValidate(inst, validation)
 {
-    if(inst.USE_PORT_OPTIMISED_TASK_SELECTION == true)
-    {
-        validation.logError(
-            "Port optimized task selection is not supported!",inst,"USE_PORT_OPTIMISED_TASK_SELECTION");
-    }
-
     if(inst.APPLICATION_ALLOCATED_HEAP == false)
     {
         validation.logError(
@@ -683,6 +649,9 @@ function onValidate(inst, validation)
         if(inst.CHECK_FOR_STACK_OVERFLOW < 2)
             validation.logWarning(
                 "Must be 2 for full ROV functionality",inst,"CHECK_FOR_STACK_OVERFLOW");
+        if(inst.HEAP_TYPE != "heap_4")
+            validation.logWarning(
+                "Must use Heap 4 for ROV functionality",inst,"HEAP_TYPE");
     }
 }
 
@@ -694,7 +663,6 @@ var freeRTOSModule = {
     longDescription     : longDescription,
     maxInstances        : 1,
     moduleInstances     : moduleInstances,
-    sharedModuleInstances: sharedModuleInstances,
     modules: (inst) => {
         var mods = []
         if (inst) {

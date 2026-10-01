@@ -1,7 +1,5 @@
 "use strict";
 /*global exports, system*/
-let CMDCommon = system.getScript("/kernel/freertos_tool/FREERTOSCommon.js");
-
 
 function onValidate(inst, validation)
 {
@@ -24,7 +22,7 @@ var config = [
     },
     {
         name: "timerPeriod",
-        displayName: "Timer Period(ticks)",
+        displayName: "Timer Period (in ticks)",
         default: "pdMS_TO_TICKS(10)"
     },
     {
@@ -75,8 +73,6 @@ var config = [
 
     }
 ];
-
-
 
 // Define the common/portable base Timer
 exports = {

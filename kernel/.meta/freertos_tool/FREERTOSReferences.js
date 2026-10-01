@@ -69,7 +69,6 @@ var references = [
         //
 ]
 
-
 function getReferencePath(name)
 {
     for (var ref of references)

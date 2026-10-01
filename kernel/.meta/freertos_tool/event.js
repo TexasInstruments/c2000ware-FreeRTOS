@@ -1,6 +1,5 @@
 "use strict";
 /*global exports, system*/
-let CMDCommon = system.getScript("/kernel/freertos_tool/FREERTOSCommon.js");
 
 var config = [
     {
@@ -40,8 +39,6 @@ var config = [
         }
     }
 ];
-
-
 
 // Define the common/portable base Event
 exports = {
